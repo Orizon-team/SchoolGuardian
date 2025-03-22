@@ -72,12 +72,12 @@ export function TextFieldForPassword({
             {isPasswordVisible ? (
               <FontAwesomeIcon
                 icon={faEye} // Ícono de ojo abierto
-                className="h-5 w-5 text-greyOri-300"
+                className="h-5 w-5 text-primaryOri"
               />
             ) : (
               <FontAwesomeIcon
                 icon={faEyeSlash} // Ícono de ojo cerrado
-                className="h-5 w-5 text-greyOri-300"
+                className="h-5 w-5 text-primaryOri"
               />
             )}
           </span>
