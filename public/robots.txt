@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /estudiante/
+Disallow: /profesor/
+Allow: /login/
+Allow: /registro/
+Allow: /
+Sitemap: https://schoolguardian.com/sitemap.xml

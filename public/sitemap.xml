@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Página principal (Home) -->
+  <url>
+    <loc>https://schoolguardian.com/home</loc>
+    <lastmod>2023-10-01</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Página de inicio de sesión (Login) -->
+  <url>
+    <loc>https://schoolguardian.com/login</loc>
+    <lastmod>2023-10-01</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Página de registro de estudiantes -->
+  <url>
+    <loc>https://schoolguardian.com/registro/estudiante</loc>
+    <lastmod>2023-10-01</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Página de registro de profesores -->
+  <url>
+    <loc>https://schoolguardian.com/registro/profesor</loc>
+    <lastmod>2023-10-01</lastmod>
+    <priority>0.8</priority>
+  </url>
+</urlset>

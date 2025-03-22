@@ -1,0 +1,1 @@
+//Funciones para el consumo de API

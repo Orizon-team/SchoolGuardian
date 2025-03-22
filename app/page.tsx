@@ -1,32 +1,59 @@
-import AcmeLogo from '@/app/ui/acme-logo';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { FillButton, OutlineButton_white, SpecialRedButton, SpecialGreenButton, } from "@/components/ui/button";
+import { TextField, TextFieldForPassword }from "@/components/ui/text_field";
+import { Checkbox} from "@/components/ui/checkbox";
+import { ArrowRightIcon, CheckCircleIcon, EyeDropperIcon, EyeIcon, HomeIcon, TrashIcon, UserIcon, } from "@heroicons/react/24/outline";
+import{ Dropdown } from "@/components/ui/dropdown"
+import Link from "next/link";
+import { CloseEvent } from "node:http";
+import { Header } from "@/components/ui/header";
 
 export default function Page() {
+  
+  const genres = ["Option 1", "Option 2", "Option 3", "Option 4"];
+
   return (
     <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
-        {/* <AcmeLogo /> */}
+      
+      {/* Componentes de header */}
+      <Header/>
+
+      {/* Componentes de botones */}
+      <div className="flex flex-column gap-x-4">
+        <h1 className="text-2xl font-bold text-white">Buttons components</h1>
+
+        <FillButton text="Hello!" isWithIcon={true} icon={<UserIcon />} />
+        <OutlineButton_white
+          text="Empezar"
+          isWithIcon={false}
+          icon={<HomeIcon />}
+        />
+        <SpecialRedButton
+          text="Eliminar"
+          isWithIcon={true}
+          icon={<TrashIcon />}
+        />
+        <SpecialGreenButton
+          text="Editar"
+          isWithIcon={true}
+          icon={<CheckCircleIcon />}
+        />
       </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Acme.</strong> This is the example for the{' '}
-            <a href="https://nextjs.org/learn/" className="text-blue-500">
-              Next.js Learn Course
-            </a>
-            , brought to you by Vercel.
-          </p>
-          <Link
-            href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
-          >
-            <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          {/* Add Hero Images Here */}
-        </div>
+
+      {/* Componentes de selectores */}
+      <Dropdown
+        placeholder="Dropdown"
+        genres={genres}
+      />
+
+
+      {/* Componentes de entrada de texto */}
+      <div className="flex flex-column gap-x-2">
+        <TextField text="Nombre" placeHolder="Tu nombre" isWithIcon={false} icon={ <UserIcon/>}/>
+        <TextFieldForPassword text="Contraseña" placeHolder="Tu contraseña" isWithIcon={true} />
+      </div>
+      <div className="p-4">
+      <Checkbox label="Lunes" />
+
       </div>
     </main>
   );
