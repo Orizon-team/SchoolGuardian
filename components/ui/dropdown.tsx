@@ -41,7 +41,7 @@ export function Dropdown({ placeholder, genres }: DropdownProps) {
           className="p-3 w-full min-w-[200px] flex items-center justify-between rounded-sm border border-greyOri-200 bg-transparent text-greyOri-400 text-left"
         >
           <span>{selectedValue || placeholder}</span>
-          <FontAwesomeIcon icon={faAngleDown} className="text-white h-3.5 w-3.5 ml-2" />
+          <FontAwesomeIcon icon={faAngleDown} className="text-greyOri-400 h-3.5 w-3.5 ml-2" />
         </button>
         {isOpen && (
           <ul className="absolute mt-2 rounded-sm border border-greyOri-200 w-full">

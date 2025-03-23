@@ -19,10 +19,7 @@ export function TextField({
 }: textFieldprops) {
   return (
     <div className="flex flex-col">
-      <label
-        htmlFor="email2"
-        className="text-sm text-primaryOri font-bold"
-      >
+      <label htmlFor="email2" className="text-sm text-primaryOri font-bold">
         {text}
       </label>
       <div className="relative flex items-center mt-2">
@@ -30,7 +27,9 @@ export function TextField({
           type="text"
           id="email2"
           placeholder={placeHolder}
-          className="w-full pl-10 text-primaryOri border border-greyOri-300 rounded-sm bg-transparent h-12"
+          className={`w-full ${
+            isWithIcon && icon ? "pl-10" : "pl-3"
+          } text-primaryOri border border-greyOri-300 rounded-sm bg-transparent h-12`}
         />
         {isWithIcon &&
           icon &&

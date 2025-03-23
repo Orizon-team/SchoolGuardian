@@ -30,6 +30,5 @@ export function Checkbox({ label, checked, onChange, id = "checkbox-black" }: Ch
       </label>
       {label && <span className="ml-2">{label}</span>}
     </div>
-  )
+  );
 }
-
