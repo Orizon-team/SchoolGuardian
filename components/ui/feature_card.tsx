@@ -19,5 +19,3 @@ export function FeatureCard({ icon, title, description }: featureCardProps) {
     </section>
   );
 }
-
-//Valeee!

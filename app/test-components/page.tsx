@@ -27,8 +27,8 @@ import { Footer } from "@/components/ui/footer";
 import { Table } from "@/components/ui/table";
 import { StatusIndicator } from "@/components/ui/status";
 import { ClassCardTeacher } from "@/components/ui/class_card";
-import { StatusCheckbox  } from "@/components/ui/status_Checkbox";
-import {ProfileCard} from "@/components/ui/perfil_card";
+import { StatusCheckbox } from "@/components/ui/status_Checkbox";
+import { ProfileCard } from "@/components/ui/perfil_card";
 
 export default function TestComponents() {
   const genres = ["Option 1", "Option 2", "Option 3", "Option 4"];
@@ -48,8 +48,8 @@ export default function TestComponents() {
     ["Carlos López", "42", "Gerente", "2018-03-10"],
   ];
 
-  const headClassName = [ "bg-primaryOri", "bg-primaryOri", "bg-primaryOri", "bg-primaryOri"];
-  const tbodyClassName = [ ["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"], ["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"], ["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"]];
+  const headClassName = ["bg-primaryOri", "bg-primaryOri", "bg-primaryOri", "bg-primaryOri"];
+  const tbodyClassName = [["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"], ["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"], ["text-primaryOri", "text-primaryOri", "text-primaryOri", "text-primaryOri"]];
 
   const handleChange = (key: keyof typeof checks) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecks({ ...checks, [key]: e.target.checked });
@@ -109,75 +109,75 @@ export default function TestComponents() {
       </div>
       <div>
         {/* Componentes de Estado */}
-          <StatusIndicator
-            text="A tiempo"
-            bgColor="bg-greenOri-100"
-            textColor="text-successstate"
-          />
+        <StatusIndicator
+          text="A tiempo"
+          bgColor="bg-greenOri-100"
+          textColor="text-successstate"
+        />
 
-          {/* Estado "Tarde" */}
-          <StatusIndicator
-            text="Tarde"
-            bgColor="bg-yellowOri-100"
-            textColor="text-warningstate"
-          />
+        {/* Estado "Tarde" */}
+        <StatusIndicator
+          text="Tarde"
+          bgColor="bg-yellowOri-100"
+          textColor="text-warningstate"
+        />
 
-          {/* Estado "Ausente" */}
-          <StatusIndicator
-            text="Ausente"
-            bgColor="bg-redOri-100"
-            textColor="text-errostate"
-          />
+        {/* Estado "Ausente" */}
+        <StatusIndicator
+          text="Ausente"
+          bgColor="bg-redOri-100"
+          textColor="text-errostate"
+        />
       </div>
       <div className="p-4 flex flex-col gap-2 w-fit">
-      <StatusCheckbox
-        label="A tiempo"
-        color="green"
-        checked={checks.onTime1}
-        onChange={handleChange("onTime1")}
-      />
-      <StatusCheckbox
-        label="A tiempo"
-        color="green"
-        checked={checks.onTime2}
-        onChange={handleChange("onTime2")}
-      />
-      <StatusCheckbox
-        label="Tarde"
-        color="yellow"
-        checked={checks.late1}
-        onChange={handleChange("late1")}
-      />
-      <StatusCheckbox
-        label="Tarde"
-        color="yellow"
-        checked={checks.late2}
-        onChange={handleChange("late2")}
-      />
-      <StatusCheckbox
-        label="Falta"
-        color="red"
-        checked={checks.missing1}
-        onChange={handleChange("missing1")}
-      />
-      <StatusCheckbox
-        label="Falta"
-        color="red"
-        checked={checks.missing2}
-        onChange={handleChange("missing2")}
-      />
-    </div>
+        <StatusCheckbox
+          label="A tiempo"
+          color="green"
+          checked={checks.onTime1}
+          onChange={handleChange("onTime1")}
+        />
+        <StatusCheckbox
+          label="A tiempo"
+          color="green"
+          checked={checks.onTime2}
+          onChange={handleChange("onTime2")}
+        />
+        <StatusCheckbox
+          label="Tarde"
+          color="yellow"
+          checked={checks.late1}
+          onChange={handleChange("late1")}
+        />
+        <StatusCheckbox
+          label="Tarde"
+          color="yellow"
+          checked={checks.late2}
+          onChange={handleChange("late2")}
+        />
+        <StatusCheckbox
+          label="Falta"
+          color="red"
+          checked={checks.missing1}
+          onChange={handleChange("missing1")}
+        />
+        <StatusCheckbox
+          label="Falta"
+          color="red"
+          checked={checks.missing2}
+          onChange={handleChange("missing2")}
+        />
+      </div>
       <div>
         <SearchField placeHolder="Buscar clases" />
       </div>
       {/* Conponente del footer */}
       <div className="flex justify-center items-center h-screen">
-           <ProfileCard 
-           name="John Doe" 
-           email="john.doe@example.com" 
-           role="Estudiante" 
-           />
-       </div>
+        <ProfileCard
+          name="John Doe"
+          email="john.doe@example.com"
+          role="Estudiante"
+        />
+      </div>
       <div>
         <Footer />
       </div>

@@ -37,9 +37,7 @@ export default function Student_Dasboard() {
             </div>
 
             <div className="flex gap-6">
-                {/* Contenedor del Historial de Asistencia */}
                 <div className="flex-1 rounded-md p-8 border border-greyOri-200 space-y-4">
-                    {/* Título y descripción */}
                     <div className="space-y-1">
                         <h2 className="text-3xl-ori font-bold text-primaryOri">
                             Historial de Asistencia
@@ -49,21 +47,18 @@ export default function Student_Dasboard() {
                         </p>
                     </div>
 
-                    {/* Filtros de búsqueda */}
                     <div className="flex items-center gap-4">
                         <SearchField placeHolder="Buscar clases" />
                         <Dropdown placeholder="Filtrar por clase" genres={genres} />
                         <Dropdown placeholder="Filtrar por estado" genres={genres2} />
                     </div>
 
-                    {/* Tabla de asistencia */}
                     <div>
                         <Table headers={headers} rows={rows} headClassName={headClassName} />
                     </div>
                 </div>
 
-                {/* ProfileCard (fuera del borde, al lado derecho) */}
-                <div> {/* Ajusta el ancho según tus necesidades */}
+                <div>
                     <ProfileCard
                         name="John Doe"
                         email="john.doe@example.com"
