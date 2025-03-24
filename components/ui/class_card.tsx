@@ -25,7 +25,10 @@ interface classCardProps {
   numberOfStudents: number;
   codeClass: string;
   teacherName: string;
+  onAttendanceClick?: () => void; // Función para el botón "Asistencias"
+  onDeleteClick?: () => void; // Función para el botón "Eliminar"
 }
+
 
 export function ClassCardTeacher({
   nameClass,
@@ -36,19 +39,17 @@ export function ClassCardTeacher({
   days,
   codeClass,
   teacherName,
+  onAttendanceClick,
+  onDeleteClick,
 }: classCardProps) {
-  const [isCopy, setIsCopy] = useState(false)
-  const [showAttendanceModal, setShowAttendanceModal] = useState(false)
+  const [isCopy, setIsCopy] = useState(false);
 
-  const handleAttendanceClick = () => {
-    setShowAttendanceModal(true)
-  }
+  const handleCopy = () => {
+    navigator.clipboard.writeText(codeClass); // Copia el código al portapapeles
+    setIsCopy(true); // Cambia el estado para mostrar el ícono de check
+    setTimeout(() => setIsCopy(false), 2000); // Vuelve al ícono de copiar después de 2 segundos
+  };
 
-  // Función para cerrar el modal de asistencias
-  const handleCloseAttendanceModal = () => {
-    setShowAttendanceModal(false)
-  }
-  
   return (
     <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg w-auto">
       <h1 className="text-xl font-bold">{nameClass}</h1>
@@ -68,15 +69,18 @@ export function ClassCardTeacher({
           <label className="textsm text-primaryOri">{days}</label>
         </div>
         <div className="flex gap-4 items-center">
-          <FontAwesomeIcon icon={faUserGroup} className="text-primaryOri w-4 h-5" />
+          <FontAwesomeIcon
+            icon={faUserGroup}
+            className="text-primaryOri w-4 h-5"
+          />
           <label className="textsm text-primaryOri">{numberOfStudents}</label>
         </div>
-        <div className="flex gap-4 items-center items-center justify-between">
-          <div className="flex bg-greyOri-50 p-1 px-2 rounded-xl gap-2 ">
+        <div className="flex gap-4 items-center justify-between">
+          <div className="flex bg-greyOri-50 p-1 px-2 rounded-xl gap-2">
             <label className="text-greyOri-500 font-bold">Code: {codeClass}</label>
           </div>
           <span
-            onClick={() => setIsCopy(!isCopy)} // Alterna la visibilidad
+            onClick={handleCopy} // Llama a la función para copiar
             className="cursor-pointer"
           >
             {isCopy ? (
@@ -98,15 +102,16 @@ export function ClassCardTeacher({
           text="Asistencias"
           isWithIcon={true}
           icon={<CheckIcon />}
+          onClick={onAttendanceClick} // Llama a la función pasada como prop
         />
         <SpecialRedButton
           text="Eliminar"
           isWithIcon={true}
           icon={<TrashIcon />}
+          onClick={onDeleteClick} // Llama a la función pasada como prop
         />
       </div>
     </section>
-    
   );
 }
 

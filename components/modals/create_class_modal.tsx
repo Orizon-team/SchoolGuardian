@@ -1,7 +1,7 @@
 import { TextField } from "@/components/ui/text_field";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
-import { ClockIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FillButton, OutlineButton } from "@/components/ui/button";
 
@@ -10,15 +10,12 @@ interface CreateClassModalProps {
   onClose: () => void;
 }
 
-export function CreateClassModal({
-  isOpen,
-  onClose,
-}: CreateClassModalProps) {
+export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg w-[500px] max-w-full">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
+      <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg w-[500px] max-w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Crear Clase</h1>
           <button
@@ -36,11 +33,13 @@ export function CreateClassModal({
             text="Nombre de la clase"
             placeHolder="Nombre de tu clase"
             isWithIcon={false}
+            isBold={true}
           />
           <TextField
             text="Descripción"
             placeHolder="Describe una breve introducción de tu clase"
             isWithIcon={false}
+            isBold={true}
           />
           <div className="flex gap-4 items-center">
             <TextField
@@ -48,12 +47,14 @@ export function CreateClassModal({
               placeHolder="9:00"
               isWithIcon={true}
               icon={<ClockIcon />}
+              isBold={true}
             />
             <TextField
               text="Duración (Horas)"
               placeHolder="200"
               isWithIcon={true}
               icon={<ClockIcon />}
+              isBold={true}
             />
           </div>
           <label className="text-primaryOri font-bold text-sm">

@@ -8,7 +8,7 @@ interface StatusModalProps {
   description: string; // Nueva propiedad para el texto de descripción
 }
 
-export function LoadingModal({ isOpen, description = "Cargando..." }: LoadingModalProps) {
+export function LoadingModal({ isOpen, description = "Cargando..." }: StatusModalProps) {
     if (!isOpen) return null;
   
     return (
@@ -47,7 +47,7 @@ export function SuccesModal({ isOpen, onClose, description }: StatusModalProps) 
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" />
+          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ export function ErrorModal({ isOpen, onClose, description }: StatusModalProps) {
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" />
+          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@ export function InfoModal({ isOpen, onClose, description }: StatusModalProps) {
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" />
+          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
         </div>
       </div>
     </div>
@@ -137,7 +137,7 @@ export function WarningModal({ isOpen, onClose, description }: StatusModalProps)
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" />
+          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
         </div>
       </div>
     </div>
