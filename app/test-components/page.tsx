@@ -10,6 +10,8 @@ import { TextField, TextFieldForPassword } from "@/components/ui/text_field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchField } from "@/components/ui/search_Field";
 // import { AttendanceModal } from "@/components/modals/attendance_modal";
+import { ProfileCard } from "@/components/ui/perfil_card";
+
 import {
   ArrowRightIcon,
   CheckCircleIcon,
@@ -170,6 +172,13 @@ export default function TestComponents() {
         <SearchField placeHolder="Buscar clases" />
       </div>
       {/* Conponente del footer */}
+      <div className="flex justify-center items-center h-screen">
+          <ProfileCard 
+          name="John Doe" 
+          email="john.doe@example.com" 
+          role="Estudiante" 
+          />
+      </div>
       <div>
         <Footer />
       </div>
