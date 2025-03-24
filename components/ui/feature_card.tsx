@@ -9,7 +9,7 @@ interface featureCardProps {
 }
 export function FeatureCard({ icon, title, description }: featureCardProps) {
   return (
-    <section className="flex flex-col items-start gap-2 bg-secondaryOri border-2 border-greyOri p-5 rounded-lg  h-50 w-80">
+    <section className="flex flex-col items-start gap-2  p-5 rounded-lg  h-50 w-80">
        {icon &&
         React.cloneElement(icon, {
           className: "text-primaryOri w-6 h-5", // Clase aplicada al ícono pasado como prop
