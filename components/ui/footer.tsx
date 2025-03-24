@@ -5,7 +5,7 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 
 export function Footer() {
   return (
-    <footer className="mt-10 w-full border-t border-greyOri-200 py-4">
+    <footer className="w-full border-t border-greyOri-200 py-4">
       <section className="flex flex-col items-center justify-center md:flex-row md:justify-around mx-auto md:gap-96 w-full">
         <p className="text-greyOri-400 text-sm-ori text-center font-bold antialiased">
           &copy; 2025 ORIZON. Todos los derechos reservados.
