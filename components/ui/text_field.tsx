@@ -19,7 +19,7 @@ export function TextField({
 }: textFieldprops) {
   return (
     <div className="flex flex-col">
-      <label htmlFor="email2" className="text-sm text-primaryOri font-bold">
+      <label htmlFor="email2" className="text-sm text-primaryOri">
         {text}
       </label>
       <div className="relative flex items-center mt-2">
@@ -52,7 +52,7 @@ export function TextFieldForPassword({
     <div className="flex flex-col">
       <label
         htmlFor="password"
-        className="text-sm text-navy-700 dark:text-primaryOri font-bold"
+        className="text-sm text-navy-700 dark:text-primaryOri"
       >
         {text}
       </label>
@@ -66,7 +66,7 @@ export function TextFieldForPassword({
         {isWithIcon && (
           <span
             onClick={() => setIsPasswordVisible(!isPasswordVisible)} // Alterna la visibilidad
-            className="absolute right-3 cursor-pointer"
+            className="absolute right-3 bottom-2 cursor-pointer"
           >
             {isPasswordVisible ? (
               <FontAwesomeIcon
