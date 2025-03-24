@@ -6,6 +6,7 @@ import { faUserTie, faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import { TextField, TextFieldForPassword } from "@/components/ui/text_field";
 import { FillButton } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignUp() {
   const [selectedRole, setSelectedRole] = useState("profesor"); // Estado para controlar la selección
@@ -25,10 +26,10 @@ export default function SignUp() {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
       </div>
 
-      <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg w-[500px] max-w-full">
+      <section className="bg-secondaryOri border-2 border-greyOri p-6 rounded-lg shadow-lg w-[550px] max-w-full">
         <div className="flex flex-col justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Crear una cuenta</h1>
-          <p className="text-sm text-greyOri-400 mb-4">
+          <h1 className="text-xl font-bold mb-2">Crear una cuenta</h1>
+          <p className="text-sm text-greyOri-400 mb-2">
             Elige tu tipo de cuenta e ingresa tu información.
           </p>
         </div>
@@ -60,9 +61,7 @@ export default function SignUp() {
           {/* Opción Profesor */}
           <div
             className={`flex gap-2 items-center justify-center flex-grow ${
-              isProfesor
-                ? "bg-primaryOri text-secondaryOri"
-                : "text-primaryOri"
+              isProfesor ? "bg-primaryOri text-secondaryOri" : "text-primaryOri"
             } font-bold rounded-lg py-4 px-8 cursor-pointer`}
             onClick={() => setSelectedRole("profesor")}
           >
@@ -130,11 +129,11 @@ export default function SignUp() {
             paddingX="px-10"
           />
 
-          <div className="flex items-center gap-2">
-            <p className="text-greyOri-400">¿Ya tienes una cuenta?</p>
-            <a href="/login" className="text-primaryOri">
+          <div className="flex items-center gap-2 text-sm-ori text-greyOri-500">
+            ¿Ya tienes una cuenta?
+            <Link href="/login" className="text-primaryOri">
               Inicia sesión
-            </a>
+            </Link>
           </div>
         </div>
       </section>
