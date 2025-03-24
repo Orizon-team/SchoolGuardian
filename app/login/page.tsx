@@ -12,23 +12,23 @@ export default function Login() {
         backgroundPosition: "center",
       }}
     >
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+      <div className="max-w-md w-full bg-secondaryOri rounded-xl shadow-lg p-8">
         <h2 className="text-2xl-ori font-bold text-gray-900 mb-2 text-center">
           Inicio de sesión
         </h2>
-        <p className="text-sm text-gray-600 text-center mb-5">
+        <p className="text-sm-ori text-gray-600 text-center mb-5">
           Ingresa tus datos para acceder a tu cuenta
         </p>
 
         <form className="space-y-4">
           <TextField text="Nombre" placeHolder="Tu nombre" isWithIcon={false} />
           <div className="flex justify-end">
-            <a
+            <Link
               href="#"
               className="text-sm-ori text-greyOri-500 hover:text-greyOri-950"
             >
               Olvidé mi contraseña
-            </a>
+            </Link>
           </div>
           <TextFieldForPassword
             text="Contraseña"
