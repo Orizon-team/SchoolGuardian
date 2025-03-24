@@ -28,6 +28,7 @@ import { Table } from "@/components/ui/table";
 import { StatusIndicator } from "@/components/ui/status";
 import { ClassCardTeacher } from "@/components/ui/class_card";
 import { StatusCheckbox  } from "@/components/ui/status_Checkbox";
+import {ProfileCard} from "@/components/ui/perfil_card";
 
 export default function TestComponents() {
   const genres = ["Option 1", "Option 2", "Option 3", "Option 4"];
@@ -170,6 +171,13 @@ export default function TestComponents() {
         <SearchField placeHolder="Buscar clases" />
       </div>
       {/* Conponente del footer */}
+      <div className="flex justify-center items-center h-screen">
+           <ProfileCard 
+           name="John Doe" 
+           email="john.doe@example.com" 
+           role="Estudiante" 
+           />
+       </div>
       <div>
         <Footer />
       </div>
