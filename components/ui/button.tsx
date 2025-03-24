@@ -6,15 +6,17 @@ interface buttonProps {
   isWithIcon: boolean;
   icon?: React.ReactElement<any>;
   paddingX?: string; // Nueva propiedad para el padding horizontal
+  isFullWidth?: boolean; // Nueva propiedad para determinar si es w-full
+  isFlex?: boolean; // Nueva propiedad para determinar si es flex e items-center
   onClick?: () => void; // Función que se ejecutará al hacer clic
 }
 
-export function FillButton({ text, isWithIcon, icon, paddingX = "px-20", onClick }: buttonProps) {
+export function FillButton({ text, isWithIcon, icon, paddingX = "px-20", isFullWidth = false, isFlex = true, onClick }: buttonProps) {
   return (
     <div>
       <button
         onClick={onClick}
-        className={`flex items-center gap-x-2 bg-primaryOri text-sm-ori text-secondaryOri font-bold rounded-lg py-4 ${paddingX} hover:bg-greyOri-900`}
+        className={`${isFullWidth ? "w-full" : ""} ${isFlex ? "flex items-center" : ""} gap-x-2 bg-primaryOri text-sm-ori text-secondaryOri font-bold rounded-lg py-4 ${paddingX} hover:bg-greyOri-900`}
       >
         {isWithIcon &&
           icon &&
