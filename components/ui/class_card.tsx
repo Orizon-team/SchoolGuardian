@@ -93,7 +93,7 @@ export function ClassCardTeacher({
           </span>
         </div>
       </div>
-      <div className="flex justify-between gap-24">
+      <div className="flex justify-between flex-wrap gap-4">
         <SpecialGreenButton
           text="Asistencias"
           isWithIcon={true}
