@@ -6,13 +6,9 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { Table } from "@/components/ui/table";
 import { StatusIndicator } from "@/components/ui/status";
 import { ProfileCard } from "@/components/ui/perfil_card";
+import { Usuario } from "@/lib/api/models/definitions";
 
-interface UserData {
-    id: number;
-    email: string;
-    nombre: string;
-    tipo: number;
-  }
+
 
 const genres = ["Matemáticas", "Historia", "Ciencias Sociales", "Inglés"];
 const genres2 = ["Todos los estados", "A tiempo", "Tarde", "Ausente"];
@@ -35,13 +31,13 @@ const rows = [
 const headClassName = ["", "", "text-center", "text-center"];
 
 export default function Student_Dasboard() {
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] = useState<Usuario | null>(null);
 
     useEffect(() => {
         // Obtener datos del localStorage al cargar el componente
         const userString = localStorage.getItem('usuario');
         if (userString) {
-            const user: UserData = JSON.parse(userString);
+            const user: Usuario = JSON.parse(userString);
             setUserData(user);
         }
     }, []);
@@ -92,7 +88,7 @@ export default function Student_Dasboard() {
                         <ProfileCard
                             name={userData.nombre}
                             email={userData.email}
-                            role={getRoleText(userData.tipo)}
+                            role={getRoleText(userData.id_tipo)}
                             width="w-96"
                         />
                     ) : (

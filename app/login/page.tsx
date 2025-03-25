@@ -61,7 +61,7 @@ export default function Login() {
 
         if (usuarioString) {
           const usuario = JSON.parse(usuarioString);
-          const tipo = usuario.tipo;
+          const tipo = usuario.id_tipo;
 
           if (tipo === 1) {
             console.log("Usuario tipo 1: Administrador");
