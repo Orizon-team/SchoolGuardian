@@ -1,16 +1,23 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { TextField, TextFieldForPassword } from "@/components/ui/text_field";
+import { TextField } from "@/components/ui/text_field";
 import { FillButton } from "@/components/ui/button";
+import { joinClassRequest } from "@/lib/api/fetch/join_class_request";
+import { SuccesModal, LoadingModal, ErrorModal } from "@/components/modals/status_modal";
 
 interface JoinClassProps {
   onClose: () => void;
 }
 
 export function JoinClass({ onClose }: JoinClassProps) {
+  const [codigoClase, setCodigoClase] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -18,6 +25,46 @@ export function JoinClass({ onClose }: JoinClassProps) {
       document.body.style.overflow = '';
     };
   }, []);
+
+  const handleJoinClass = async () => {
+    if (!codigoClase.trim()) {
+      setErrorMessage("Por favor ingresa un código de clase");
+      setShowError(true);
+      return;
+    }
+
+    setShowLoading(true);
+    setErrorMessage("");
+
+    try {
+      const success = await joinClassRequest(codigoClase);
+      if (success) {
+        setShowSuccess(true);
+      } else {
+        setErrorMessage("Error al unirse a la clase. Verifica el código e intenta nuevamente.");
+        setShowError(true);
+      }
+    } catch (err) {
+      setErrorMessage("Ocurrió un error inesperado. Por favor intenta más tarde.");
+      setShowError(true);
+      console.error(err);
+    } finally {
+      setShowLoading(false);
+    }
+  };
+
+  const handleCloseSuccess = () => {
+    setShowSuccess(false);
+    onClose();
+  };
+
+  const handleCloseLoading = () => {
+    setShowLoading(false);
+  };
+
+  const handleCloseError = () => {
+    setShowError(false);
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -33,7 +80,16 @@ export function JoinClass({ onClose }: JoinClassProps) {
         </p>
 
         <div className="flex flex-col gap-4">
-          {/* <TextField text="" placeHolder="Ingresa el código de la clase" isWithIcon={false} />  */}
+          <TextField
+            text=""
+            placeHolder="Ingresa el código de la clase"
+            isWithIcon={false}
+            onChange={(e) => {
+              setCodigoClase(e.target.value);
+              setErrorMessage("");
+            }} 
+            value={codigoClase}
+          />
 
           <div className="flex justify-between items-center">
             <a
@@ -45,10 +101,34 @@ export function JoinClass({ onClose }: JoinClassProps) {
             >
               Cerrar
             </a>
-            <FillButton text="Unirse" paddingX="px-10" paddingY="py-3" isWithIcon={false} />
+            <FillButton 
+              text="Unirse" 
+              paddingX="px-10" 
+              paddingY="py-3" 
+              isWithIcon={false} 
+              onClick={handleJoinClass}
+            />
           </div>
         </div>
       </section>
+      <LoadingModal
+        isOpen={showLoading}
+        onClose={handleCloseLoading}
+        description="Procesando tu solicitud..."
+      />
+
+      <SuccesModal
+        isOpen={showSuccess}
+        onClose={handleCloseSuccess}
+        description="¡Te has unido a la clase exitosamente!"
+        showCloseButton={true}
+      />
+
+      <ErrorModal
+        isOpen={showError}
+        onClose={handleCloseError}
+        description={errorMessage}
+      />
     </div>
   );
 }

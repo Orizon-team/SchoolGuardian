@@ -1,8 +1,18 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { SearchField } from "@/components/ui/search_Field";
 import { Dropdown } from "@/components/ui/dropdown";
 import { Table } from "@/components/ui/table";
 import { StatusIndicator } from "@/components/ui/status";
 import { ProfileCard } from "@/components/ui/perfil_card";
+
+interface UserData {
+    id: number;
+    email: string;
+    nombre: string;
+    tipo: number;
+  }
 
 const genres = ["Matemáticas", "Historia", "Ciencias Sociales", "Inglés"];
 const genres2 = ["Todos los estados", "A tiempo", "Tarde", "Ausente"];
@@ -25,6 +35,25 @@ const rows = [
 const headClassName = ["", "", "text-center", "text-center"];
 
 export default function Student_Dasboard() {
+    const [userData, setUserData] = useState<UserData | null>(null);
+
+    useEffect(() => {
+        // Obtener datos del localStorage al cargar el componente
+        const userString = localStorage.getItem('usuario');
+        if (userString) {
+            const user: UserData = JSON.parse(userString);
+            setUserData(user);
+        }
+    }, []);
+
+    const getRoleText = (tipo: number) => {
+        switch(tipo) {
+            case 2: return "Alumno";
+            // Agrega más casos según necesites
+            default: return "Usuario";
+        }
+    };
+
     return (
         <div className="p-8">
             <div className="mb-8">
@@ -59,12 +88,21 @@ export default function Student_Dasboard() {
                 </div>
 
                 <div>
-                    <ProfileCard
-                        name="John Doe"
-                        email="john.doe@example.com"
-                        role="Estudiante"
-                        width="w-96"
-                    />
+                    {userData ? (
+                        <ProfileCard
+                            name={userData.nombre}
+                            email={userData.email}
+                            role={getRoleText(userData.tipo)}
+                            width="w-96"
+                        />
+                    ) : (
+                        <ProfileCard
+                            name="Cargando..."
+                            email=""
+                            role=""
+                            width="w-96"
+                        />
+                    )}
                 </div>
             </div>
         </div>

@@ -6,12 +6,14 @@ import {
   faInfoCircle,
   faTimesCircle,
   faSpinner,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 
 interface StatusModalProps {
   isOpen: boolean;
   onClose: () => void;
-  description: string; // Nueva propiedad para el texto de descripción
+  description: string;
+  showCloseButton?: boolean;
 }
 
 export function LoadingModal({
@@ -37,6 +39,7 @@ export function SuccesModal({
   isOpen,
   onClose,
   description,
+  showCloseButton = true, // Valor por defecto true
 }: StatusModalProps) {
   if (!isOpen) return null;
 
@@ -51,8 +54,26 @@ export function SuccesModal({
             />
             <h2 className="text-xl font-bold text-primaryOri">¡Éxito!</h2>
           </div>
+          <FontAwesomeIcon icon={faXmark} className="text-primaryOri w-5 h-5 cursor-pointer hover:opacity-80" onClick={onClose} />
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
+        {showCloseButton && (
+          <div className="mt-6 flex justify-between items-center">
+            <a
+              className="font-bold cursor-pointer hover:text-greyOri-950"
+              onClick={onClose}
+            >
+              Cerrar
+            </a>
+            <OutlineButton
+              text="Aceptar"
+              onClick={onClose}
+              paddingX="px-4"
+              paddingY="py-2"
+              isWithIcon={false}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -72,6 +93,7 @@ export function ErrorModal({ isOpen, onClose, description }: StatusModalProps) {
             />
             <h2 className="text-xl font-bold text-errorstate">¡Error!</h2>
           </div>
+          <FontAwesomeIcon icon={faXmark} className="text-primaryOri w-5 h-5 cursor-pointer hover:opacity-80" onClick={onClose} />
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -80,11 +102,18 @@ export function ErrorModal({ isOpen, onClose, description }: StatusModalProps) {
           </button>
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex justify-between items-center">
+          <a
+            className="font-bold cursor-pointer hover:text-greyOri-950"
+            onClick={onClose}
+          >
+            Cerrar
+          </a>
           <OutlineButton
             text="Aceptar"
             onClick={onClose}
             paddingX="px-4"
+            paddingY="py-2"
             isWithIcon={false}
           />
         </div>
@@ -146,6 +175,7 @@ export function WarningModal({
             />
             <h2 className="text-xl font-bold text-warning">¡Advertencia!</h2>
           </div>
+          <FontAwesomeIcon icon={faXmark} className="text-primaryOri w-5 h-5 cursor-pointer hover:opacity-80" onClick={onClose} />
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
