@@ -10,6 +10,7 @@ export type Usuario = {
   email: string;
   contrasena: string;
   id_tipo_usuario: number;
+  intentos: number;
 };
 
 export type Clase = {

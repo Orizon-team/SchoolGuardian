@@ -1,16 +1,17 @@
 "use client";
 
-import react, { useState } from "react";
+import { useRouter } from "next/navigation";
+import react, { useEffect, useState } from "react";
 import {
   ErrorModal,
   LoadingModal,
   SuccesModal,
   WarningModal,
 } from "@/components/modals/status_modal";
-import { loginUser } from "@/lib/api/services/user_services";
 import { FillButton } from "@/components/ui/button";
 import { TextField, TextFieldForPassword } from "@/components/ui/text_field";
 import Link from "next/link";
+import { loginUserRequest } from "@/lib/api/fetch/user_request";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -21,37 +22,70 @@ export default function Login() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false) ;
-  
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   console.log("Hola esto es el useEffect del login");
+  //   const login = async () => {
+  //     const UserToken = await loginUserRequest("uxi@gmail.com", "123");
+  //     if (UserToken) {
+  //       console.log("Token recibido:", UserToken);
+  //       setToken(token);
+  //     } else {
+  //       console.error("Error al iniciar sesión. Verifica las credenciales.");
+  //     }
+  //   };
+  //   login();
+  // }, []);
 
   const handleLogin = async () => {
-    // Validación de campos vacíos
     if (!email || !contrasena) {
       setErrorMessage("Por favor, completa todos los campos.");
       setIsErrorModalOpen(true);
       return;
     }
 
-    setIsLoadingModalOpen(true); // Muestra el modal de carga
+    setIsLoadingModalOpen(true);
     try {
-      const result = await loginUser(email, contrasena);
-      setIsLoadingModalOpen(false); // Oculta el modal de carga
+      const result = await loginUserRequest(email, contrasena);
+      setIsLoadingModalOpen(false);
 
       if (result) {
         setToken(result);
-        setIsSuccessModalOpen(true); // Muestra el modal de éxito
+        setIsSuccessModalOpen(true);
         console.log("Token recibido:", result);
+
+        const usuarioString = localStorage.getItem("usuario");
+
+        if (usuarioString) {
+          const usuario = JSON.parse(usuarioString);
+          const tipo = usuario.tipo;
+
+          if (tipo === 1) {
+            console.log("Usuario tipo 1: Administrador");
+            router.push("/dashboard/teacher_dashboard");
+          } else if (tipo === 2) {
+            console.log("Usuario tipo 2: Estudiante");
+            router.push("/dashboard/student_dashboard");
+          } else {
+            console.log("Tipo de usuario desconocido.");
+          }
+        } else {
+          console.log("No se encontró el usuario en localStorage.");
+        }
       } else {
         setErrorMessage(
           "Credenciales incorrectas. Por favor, verifica tus datos."
         );
-        setIsErrorModalOpen(true); // Muestra el modal de error
+        setIsErrorModalOpen(true);
         console.error("Error al iniciar sesión.");
       }
     } catch (error) {
-      setIsLoadingModalOpen(false); // Oculta el modal de carga
+      setIsLoadingModalOpen(false);
       setErrorMessage("Error al realizar la solicitud. Intenta nuevamente.");
-      setIsErrorModalOpen(true); // Muestra el modal de error
+      setIsErrorModalOpen(true);
       console.error("Error al realizar la solicitud:", error);
     }
   };
@@ -151,8 +185,6 @@ export default function Login() {
           onClose={() => setIsWarningModalOpen(false)}
         />
       )}
-      
-       
     </div>
   );
 }

@@ -33,7 +33,7 @@ export function JoinClass({ onClose }: JoinClassProps) {
         </p>
 
         <div className="flex flex-col gap-4">
-          <TextField text="" placeHolder="Ingresa el código de la clase" isWithIcon={false} />
+          {/* <TextField text="" placeHolder="Ingresa el código de la clase" isWithIcon={false} />  */}
 
           <div className="flex justify-between items-center">
             <a

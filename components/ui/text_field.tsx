@@ -36,8 +36,8 @@ export function TextField({
           type="text"
           id="email2"
           placeholder={placeHolder}
-          value={value} // Asigna el valor dinámico
-          onChange={onChange} // Maneja los cambios en el input
+          value={value}
+          onChange={onChange}
           className={`w-full ${
             isWithIcon && icon ? "pl-10" : "pl-3"
           } text-primaryOri border border-greyOri-300 rounded-sm bg-transparent h-12`}

@@ -1,6 +1,12 @@
 import { FillButton, OutlineButton } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faExclamationTriangle, faInfoCircle, faTimesCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faExclamationTriangle,
+  faInfoCircle,
+  faTimesCircle,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -8,23 +14,30 @@ interface StatusModalProps {
   description: string; // Nueva propiedad para el texto de descripción
 }
 
-export function LoadingModal({ isOpen, description = "Cargando..." }: StatusModalProps) {
-    if (!isOpen) return null;
-  
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-secondaryOri rounded-lg shadow-lg p-6 w-[300px] flex flex-col items-center">
-          <FontAwesomeIcon
-            icon={faSpinner}
-            className="text-primaryOri w-10 h-10 animate-spin"
-          />
-          <p className="mt-4 text-gray-600 text-center">{description}</p>
-        </div>
-      </div>
-    );
-  }
+export function LoadingModal({
+  isOpen,
+  description = "Cargando...",
+}: StatusModalProps) {
+  if (!isOpen) return null;
 
-export function SuccesModal({ isOpen, onClose, description }: StatusModalProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-secondaryOri rounded-lg shadow-lg p-6 w-[300px] flex flex-col items-center">
+        <FontAwesomeIcon
+          icon={faSpinner}
+          className="text-primaryOri w-10 h-10 animate-spin"
+        />
+        <p className="mt-4 text-gray-600 text-center">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+export function SuccesModal({
+  isOpen,
+  onClose,
+  description,
+}: StatusModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -38,17 +51,8 @@ export function SuccesModal({ isOpen, onClose, description }: StatusModalProps) 
             />
             <h2 className="text-xl font-bold text-primaryOri">¡Éxito!</h2>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ✕
-          </button>
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
-        <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
-        </div>
       </div>
     </div>
   );
@@ -77,7 +81,12 @@ export function ErrorModal({ isOpen, onClose, description }: StatusModalProps) {
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
+          <OutlineButton
+            text="Aceptar"
+            onClick={onClose}
+            paddingX="px-4"
+            isWithIcon={false}
+          />
         </div>
       </div>
     </div>
@@ -107,14 +116,23 @@ export function InfoModal({ isOpen, onClose, description }: StatusModalProps) {
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
         <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
+          <OutlineButton
+            text="Aceptar"
+            onClick={onClose}
+            paddingX="px-4"
+            isWithIcon={false}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-export function WarningModal({ isOpen, onClose, description }: StatusModalProps) {
+export function WarningModal({
+  isOpen,
+  onClose,
+  description,
+}: StatusModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -136,8 +154,20 @@ export function WarningModal({ isOpen, onClose, description }: StatusModalProps)
           </button>
         </div>
         <p className="mt-4 text-gray-600">{description}</p>
-        <div className="mt-6 flex justify-end">
-          <OutlineButton text="Aceptar" onClick={onClose} paddingX="px-4" isWithIcon={false}/>
+        <div className="mt-6 flex justify-between items-center">
+          <a
+            className="font-bold cursor-pointer hover:text-greyOri-950"
+            onClick={onClose}
+          >
+            Cerrar
+          </a>
+          <OutlineButton
+            text="Aceptar"
+            onClick={onClose}
+            paddingX="px-4"
+            paddingY="py-2"
+            isWithIcon={false}
+          />
         </div>
       </div>
     </div>

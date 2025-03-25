@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie';
+import { Usuario } from "../models/definitions";
+
 const URL = "https://assists-api.onrender.com/api/usuarios";
 
 export async function loginUserRequest(email: string, contrasena: string): Promise<string | null> {
@@ -19,6 +22,10 @@ export async function loginUserRequest(email: string, contrasena: string): Promi
         }
 
         const data = await response.json();
+
+        Cookies.set("token", data.token, { expires: 7, secure: true, sameSite: "Strict" });
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        console.log("Inicio de sesión exitoso. Token y datos del usuario guardados.");
         return data.token;
     } catch (error) {
         console.error("Error al realizar el fetch:", error);
@@ -26,7 +33,7 @@ export async function loginUserRequest(email: string, contrasena: string): Promi
     }
 }
 
-export async function registerUserRequest(nombre: string, email: string, contrasena: string, id_tipo: number) {
+export async function registerUserRequest(nombre: string, email: string, contrasena: string, id_tipo: number): Promise<Omit<Usuario, "contrasena"> | null> {
     try {
         const response = await fetch(`${URL}`, {
             method: "POST",
@@ -41,16 +48,22 @@ export async function registerUserRequest(nombre: string, email: string, contras
             }),
         });
 
-        if(!response.ok)
-        {
+        if (!response.ok) {
             console.error("Error al insertar un usuario: ", response.statusText);
             return null;
         }
+        const data: Usuario = await response.json();
+
+        const { contrasena: _, ...usuarioSinContrasena } = data;
+
+
+        console.log("Usuario registrado exitosamente:", usuarioSinContrasena);
+        return data;
 
     } catch (error) {
-
+        console.error("Error al realizar la solicitud:", error);
+        return null;
     }
-
 }
 
 
