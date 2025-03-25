@@ -123,7 +123,7 @@ export default function Login() {
           />
           <div className="flex justify-end">
             <Link
-              href="https://assists-api.onrender.com/cambiarContrasena.html"
+              href="https://assists-api.onrender.com/correoCambiarContrasena.html"
               className="text-sm-ori text-greyOri-500 hover:text-greyOri-950"
             >
               Olvidé mi contraseña
