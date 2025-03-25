@@ -5,8 +5,9 @@ import {
   ErrorModal,
   LoadingModal,
   SuccesModal,
+  WarningModal,
 } from "@/components/modals/status_modal";
-import { loginUser } from "@/lib/api/user_services";
+import { loginUser } from "@/lib/api/services/user_services";
 import { FillButton } from "@/components/ui/button";
 import { TextField, TextFieldForPassword } from "@/components/ui/text_field";
 import Link from "next/link";
@@ -20,6 +21,8 @@ export default function Login() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false) ;
+  
 
   const handleLogin = async () => {
     // Validación de campos vacíos
@@ -141,6 +144,15 @@ export default function Login() {
           onClose={() => setIsErrorModalOpen(false)} // Solo se cierra cuando el usuario hace clic en cerrar
         />
       )}
+      {isWarningModalOpen && (
+        <WarningModal
+          isOpen={isWarningModalOpen}
+          description="Has alcanzado el límite de intentos."
+          onClose={() => setIsWarningModalOpen(false)}
+        />
+      )}
+      
+       
     </div>
   );
 }

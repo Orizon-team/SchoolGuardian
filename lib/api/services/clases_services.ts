@@ -1,4 +1,4 @@
-import { fetchToken } from "./user_request";
+import { loginUserRequest } from "../fetch/user_request";
 
 export async function loginUser(email: string, contrasena: string): Promise<string | null> {
   if (!email || !contrasena) {
@@ -6,7 +6,7 @@ export async function loginUser(email: string, contrasena: string): Promise<stri
     return null;
   }
 
-  const token = await fetchToken(email, contrasena);
+  const token = await loginUserRequest(email, contrasena);
 
   if (!token) {
     console.error("No se pudo obtener el token. Verifica tus credenciales.");
