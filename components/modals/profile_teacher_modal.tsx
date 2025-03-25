@@ -12,7 +12,7 @@ import { tree } from "next/dist/build/templates/app-page";
 interface ProfileCardProps {
   name: string;
   email: string;
-  role: string;
+  role: number;
   width?: string;
 }
 
@@ -54,7 +54,7 @@ export function ProfileCardModal({
               <label className="text-sm-ori text-primaryOri font-bold">
                 {name}
               </label>
-              <label className="text-greyOri-400 text-sm">Profesor</label>
+              <label className="text-greyOri-400 text-sm">{role === 1? "Profesor" : role === 2? "Estudiante" : "Invitado"}</label>
             </div>
           </div>
           <div className="flex gap-4 items-center mb-4">

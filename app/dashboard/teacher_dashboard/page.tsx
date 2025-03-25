@@ -10,6 +10,7 @@ import { ProfileCardModal } from "@/components/modals/profile_teacher_modal";
 import { CreateClassModal } from "@/components/modals/create_class_modal";
 import { WarningModal } from "@/components/modals/status_modal";
 import { ModalAssitance } from "@/components/ui/modal_Assistance";
+import { GetNowDate } from "@/lib/utils";
 export default function TeacherDashboard() {
   const [isCreateClassModalOpen, setIsCreateClassModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function TeacherDashboard() {
   return (
     <section className="flex flex-col gap-y-4 px-40 py-10">
       <h1 className="text-primaryOri text-3xl-ori font-bold">Dashboard</h1>
-      <p className="text-greyOri-400">Lunes, Marzo 17, 2025</p>
+      <p className="text-greyOri-400">{GetNowDate()}</p>
       <div className="flex gap-4 justify-between">
         <div className="w-1/3">
           <SearchField placeHolder="Buscar clase" />
@@ -49,7 +50,7 @@ export default function TeacherDashboard() {
         onClose={handleCloseModal}
         name="Juan Pérez"
         email="juan.perez@example.com"
-        role="Profesor"
+        role={1}
         width="w-96"
       />
 
@@ -82,81 +83,7 @@ export default function TeacherDashboard() {
           onDeleteClick={handleOpenWarningModal}
           onAttendanceClick={handleOpenAssistenceModal}
         />
-        {/* otra clase inventada */}
-        <ClassCardTeacher
-          nameClass="Química"
-          description="Fundamentos de la química"
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        <ClassCardTeacher
-          nameClass="Matemáticas"
-          description="Fundamentos del cálculo "
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        {/* otra clase inventada */}
-        <ClassCardTeacher
-          nameClass="Física"
-          description="Fundamentos de la física"
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        {/* otra clase inventada */}
-        <ClassCardTeacher
-          nameClass="Química"
-          description="Fundamentos de la química"
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        <ClassCardTeacher
-          nameClass="Matemáticas"
-          description="Fundamentos del cálculo "
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        {/* otra clase inventada */}
-        <ClassCardTeacher
-          nameClass="Física"
-          description="Fundamentos de la física"
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
-        {/* otra clase inventada */}
-        <ClassCardTeacher
-          nameClass="Química"
-          description="Fundamentos de la química"
-          duration={100}
-          schedule="9:00 p.m"
-          numberOfStudents={29}
-          days="Lunes, Martes"
-          codeClass="NMCU34"
-          teacherName=""
-        />
+      
       </div>
     </section>
   );

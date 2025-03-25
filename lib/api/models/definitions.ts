@@ -9,7 +9,7 @@ export type Usuario = {
   nombre: string;
   email: string;
   contrasena: string;
-  id_tipo_usuario: number;
+  id_tipo: number;
   intentos: number;
 };
 

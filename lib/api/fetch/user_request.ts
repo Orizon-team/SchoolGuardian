@@ -22,10 +22,10 @@ export async function loginUserRequest(email: string, contrasena: string): Promi
         }
 
         const data = await response.json();
-
         Cookies.set("token", data.token, { expires: 7, secure: true, sameSite: "Strict" });
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         console.log("Inicio de sesión exitoso. Token y datos del usuario guardados.");
+        
         return data.token;
     } catch (error) {
         console.error("Error al realizar el fetch:", error);
