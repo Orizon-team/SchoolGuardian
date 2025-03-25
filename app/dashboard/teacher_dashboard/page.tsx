@@ -12,6 +12,7 @@ import { WarningModal } from "@/components/modals/status_modal";
 import { ModalAssitance } from "@/components/ui/modal_Assistance";
 import { GetNowDate } from "@/lib/utils";
 export default function TeacherDashboard() {
+  //Comentario de prueba de commit
   const [isCreateClassModalOpen, setIsCreateClassModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [isAssistanceModalOpen, setIsAssistanceModalOpen] = useState(false);
