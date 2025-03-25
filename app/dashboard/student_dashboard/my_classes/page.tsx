@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { SearchField } from "@/components/ui/search_Field";
 import { FillButton } from "@/components/ui/button";
 import { JoinClass } from "@/components/ui/join_Class";
+import { GetNowDate } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ClassCardStudent } from "@/components/ui/class_card";
@@ -21,9 +22,12 @@ export default function My_Classes() {
   return (
     <div className="flex flex-col gap-y-4 px-40 py-10">
       <div className="mb-8">
-        <h2 className="text-4xl-ori font-bold text-primaryOri mb-6">
+        <h2 className="text-4xl-ori font-bold text-primaryOri">
           Mis Clases
         </h2>
+        <p className="text-lg-ori text-greyOri-500 mb-6">
+          {GetNowDate()}
+        </p>
         <div className="flex gap-4 items-center">
           <div className="flex-1">
             <SearchField placeHolder="Buscar clases" />

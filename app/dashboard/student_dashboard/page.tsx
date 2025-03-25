@@ -5,6 +5,7 @@ import { SearchField } from "@/components/ui/search_Field";
 import { Dropdown } from "@/components/ui/dropdown";
 import { Table } from "@/components/ui/table";
 import { StatusIndicator } from "@/components/ui/status";
+import { GetNowDate } from "@/lib/utils";
 import { ProfileCard } from "@/components/ui/perfil_card";
 
 interface UserData {
@@ -61,7 +62,7 @@ export default function Student_Dasboard() {
                     Dashboard
                 </h2>
                 <p className="text-lg-ori text-greyOri-500">
-                    Lunes, Marzo 17, 2025
+                    {GetNowDate()}
                 </p>
             </div>
 
