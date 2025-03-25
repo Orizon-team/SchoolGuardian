@@ -10,16 +10,16 @@ const genres2 = ["Todos los estados", "A tiempo", "Tarde", "Ausente"];
 const headers = ["Fecha", "Clases", "Hora de check-in", "Estado"];
 const rows = [
     ["Vie, Mar 21, 2025", "Matemáticas", "08:19",
-        <StatusIndicator text="A tiempo" bgColor="bg-greenOri-100" textColor="text-successstate" />],
+        <StatusIndicator text="A tiempo" bgColor="bg-greenOri-100" textColor="text-successstate" showWidth={false} />],
 
     ["Sab, Mar 22, 2025", "Historia", "08:20",
-        <StatusIndicator text="Tarde" bgColor="bg-yellowOri-100" textColor="text-warningstate" />],
+        <StatusIndicator text="Tarde" bgColor="bg-yellowOri-100" textColor="text-warningstate" showWidth={false} />],
 
     ["Dom, Mar 23, 2025", "Ciencias Sociales", "08:35",
-        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" />],
+        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" showWidth={false} />],
 
     ["Lunes, Mar 24, 2025", "Inglés", "08:50",
-        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" />],
+        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" showWidth={false} />],
 ];
 
 const headClassName = ["", "", "text-center", "text-center"];

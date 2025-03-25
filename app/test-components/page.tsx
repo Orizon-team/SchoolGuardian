@@ -29,6 +29,8 @@ import { StatusIndicator } from "@/components/ui/status";
 import { ClassCardTeacher } from "@/components/ui/class_card";
 import { StatusCheckbox } from "@/components/ui/status_Checkbox";
 import { ProfileCard } from "@/components/ui/perfil_card";
+import { JoinClass } from "@/components/ui/join_Class";
+import { ModalAssitance } from "@/components/ui/modal_Assistance";
 
 export default function TestComponents() {
   const genres = ["Option 1", "Option 2", "Option 3", "Option 4"];
@@ -55,6 +57,8 @@ export default function TestComponents() {
     setChecks({ ...checks, [key]: e.target.checked });
   };
 
+  const [isJoinClassOpen, setIsJoinClassOpen] = useState(false);
+  const [isAssistanceModalOpen, setIsAssistanceModalOpen] = useState(false);
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -177,6 +181,18 @@ export default function TestComponents() {
           email="john.doe@example.com"
           role="Estudiante"
         />
+      </div>
+      <FillButton text="Abrir" isWithIcon={false} onClick={() => setIsJoinClassOpen(true)} />
+      <div>
+        {isJoinClassOpen && (
+          <JoinClass onClose={() => setIsJoinClassOpen(false)} />
+        )}
+      </div>
+      <FillButton text="Abrir" isWithIcon={false} onClick={() => setIsAssistanceModalOpen(true)}  />
+      <div>
+        {isAssistanceModalOpen && (
+          <ModalAssitance onClose={() => setIsAssistanceModalOpen(false)} />
+        )}
       </div>
       <div>
         <Footer />

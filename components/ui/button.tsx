@@ -6,17 +6,18 @@ interface buttonProps {
   isWithIcon: boolean;
   icon?: React.ReactElement<any>;
   paddingX?: string; // Nueva propiedad para el padding horizontal
+  paddingY?: string; // Nueva propiedad para el padding horizontal
   isFullWidth?: boolean; // Nueva propiedad para determinar si es w-full
   isFlex?: boolean; // Nueva propiedad para determinar si es flex e items-center
   onClick?: () => void; // Función que se ejecutará al hacer clic
 }
 
-export function FillButton({ text, isWithIcon, icon, paddingX = "px-20", isFullWidth = false, isFlex = true, onClick }: buttonProps) {
+export function FillButton({ text, isWithIcon, icon, paddingX = "px-20",  paddingY = "py-4", isFullWidth = false, isFlex = true, onClick }: buttonProps) {
   return (
     <div>
       <button
         onClick={onClick}
-        className={`${isFullWidth ? "w-full" : ""} ${isFlex ? "flex items-center" : ""} gap-x-2 bg-primaryOri text-sm-ori text-secondaryOri font-bold rounded-lg py-4 ${paddingX} hover:bg-greyOri-900`}
+        className={`${isFullWidth ? "w-full" : ""} ${isFlex ? "flex items-center" : ""} gap-x-2 bg-primaryOri text-sm-ori text-secondaryOri font-bold rounded-lg ${paddingY} ${paddingX} hover:bg-greyOri-900`}
       >
         {isWithIcon &&
           icon &&
@@ -27,12 +28,12 @@ export function FillButton({ text, isWithIcon, icon, paddingX = "px-20", isFullW
   );
 }
 
-export function OutlineButton({ text, isWithIcon, icon, paddingX = "px-20", onClick }: buttonProps) {
+export function OutlineButton({ text, isWithIcon, icon, paddingX = "px-20", paddingY = "py-4", onClick }: buttonProps) {
   return (
     <div>
       <button
         onClick={onClick}
-        className={`flex items-center gap-x-2 bg-transparent text-sm-ori text-primaryOri border-2 border-greyOri-400 font-bold rounded-lg py-4 ${paddingX} hover:bg-greyOri-400`}
+        className={`flex items-center gap-x-2 bg-transparent text-sm-ori text-primaryOri border-2 border-greyOri-400 font-bold rounded-lg ${paddingY} ${paddingX} hover:bg-greyOri-400`}
       >
         {isWithIcon &&
           icon &&
