@@ -7,7 +7,7 @@ import {
   faCopy,
   
 } from "@fortawesome/free-regular-svg-icons";
-import { faCheck,faUserGroup, faBook } from "@fortawesome/free-solid-svg-icons";
+import { faCheck,faUserGroup, faBook, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import {
   FillButton,
   SpecialGreenButton,
@@ -156,10 +156,9 @@ export function ClassCardStudent({
       <div className="flex justify-end items-center gap-24 pl-28">
      
         <SpecialRedButton
-          text="Eliminar"
+          text="Dejar clase"
           isWithIcon={true}
-          icon={<TrashIcon />}
-       
+          icon={<FontAwesomeIcon icon={faArrowRightFromBracket} className="w-4 h-4" />}
         />
       </div>
     </section>

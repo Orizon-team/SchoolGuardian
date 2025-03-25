@@ -10,16 +10,16 @@ const genres2 = ["Todos los estados", "A tiempo", "Tarde", "Ausente"];
 const headers = ["Fecha", "Clases", "Hora de check-in", "Estado"];
 const rows = [
     ["Vie, Mar 21, 2025", "Matemáticas", "08:19",
-        <StatusIndicator text="A tiempo" bgColor="bg-greenOri-100" textColor="text-successstate" />],
+        <StatusIndicator text="A tiempo" bgColor="bg-greenOri-100" textColor="text-successstate" showWidth={false} />],
 
     ["Sab, Mar 22, 2025", "Historia", "08:20",
-        <StatusIndicator text="Tarde" bgColor="bg-yellowOri-100" textColor="text-warningstate" />],
+        <StatusIndicator text="Tarde" bgColor="bg-yellowOri-100" textColor="text-warningstate" showWidth={false} />],
 
     ["Dom, Mar 23, 2025", "Ciencias Sociales", "08:35",
-        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" />],
+        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" showWidth={false} />],
 
     ["Lunes, Mar 24, 2025", "Inglés", "08:50",
-        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" />],
+        <StatusIndicator text="Ausente" bgColor="bg-redOri-100" textColor="text-errostate" showWidth={false} />],
 ];
 
 const headClassName = ["", "", "text-center", "text-center"];
@@ -37,9 +37,7 @@ export default function Student_Dasboard() {
             </div>
 
             <div className="flex gap-6">
-                {/* Contenedor del Historial de Asistencia */}
                 <div className="flex-1 rounded-md p-8 border border-greyOri-200 space-y-4">
-                    {/* Título y descripción */}
                     <div className="space-y-1">
                         <h2 className="text-3xl-ori font-bold text-primaryOri">
                             Historial de Asistencia
@@ -49,21 +47,18 @@ export default function Student_Dasboard() {
                         </p>
                     </div>
 
-                    {/* Filtros de búsqueda */}
                     <div className="flex items-center gap-4">
                         <SearchField placeHolder="Buscar clases" />
                         <Dropdown placeholder="Filtrar por clase" genres={genres} />
                         <Dropdown placeholder="Filtrar por estado" genres={genres2} />
                     </div>
 
-                    {/* Tabla de asistencia */}
                     <div>
                         <Table headers={headers} rows={rows} headClassName={headClassName} />
                     </div>
                 </div>
 
-                {/* ProfileCard (fuera del borde, al lado derecho) */}
-                <div> {/* Ajusta el ancho según tus necesidades */}
+                <div>
                     <ProfileCard
                         name="John Doe"
                         email="john.doe@example.com"
