@@ -4,7 +4,7 @@ import { Asistencia } from '@/lib/api/models/definitions';
 
 export async function studentAttendanceRequest(): Promise<Asistencia[] | null> {
   try {
-    // 1. Obtener credenciales
+
     const userString = localStorage.getItem('usuario');
     const token = Cookies.get('token');
     
@@ -14,7 +14,7 @@ export async function studentAttendanceRequest(): Promise<Asistencia[] | null> {
 
     const { id } = JSON.parse(userString);
 
-    // 2. Hacer la petición
+   
     const response = await fetch('https://assists-api.onrender.com/api/asistencias/usuario', {
       method: 'POST',
       headers: {
@@ -24,7 +24,7 @@ export async function studentAttendanceRequest(): Promise<Asistencia[] | null> {
       body: JSON.stringify({ id })
     });
 
-    // 3. Validar respuesta
+   
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);
     }
