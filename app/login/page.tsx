@@ -169,6 +169,7 @@ export default function Login() {
           isOpen={isSuccessModalOpen}
           description="Inicio de sesión exitoso."
           onClose={() => setIsSuccessModalOpen(false)}
+          showCloseButton={false}
         />
       )}
       {isErrorModalOpen && (

@@ -35,7 +35,7 @@ export function Header() {
                 </button>
               </Link>
             </li>
-          </ul>
+          </ul> 
         </nav>
       </div>
     </header>
@@ -46,6 +46,14 @@ export function HeaderToDashboard() {
   const [user, setUser] = useState<Usuario | null>(null);
 
   const [isOpenPerfilModal, setIsOpenPerfilModal] = useState(false);
+
+  const getDashboardRoute = () => {
+    switch(user?.id_tipo) {
+      case 1: return "/dashboard/teacher_dashboard";
+      case 2: return "/dashboard/student_dashboard";
+      default: return "/";
+    }
+  };
 
   const handleOpenPerfilModal = () => {
     setIsOpenPerfilModal(true);
@@ -86,7 +94,7 @@ export function HeaderToDashboard() {
           <ul className="flex items-center gap-4">
             <li>
               <Link
-                href=""
+                href={getDashboardRoute()}
                 className="text-secondaryOri text-sm-ori font-bold transition hover:text-greyOri-300"
               >
                 Dashboard
@@ -95,7 +103,7 @@ export function HeaderToDashboard() {
             {user?.id_tipo === 2 && (
               <li>
                 <Link
-                  href=""
+                  href="/dashboard/student_dashboard/my_classes"
                   className="text-secondaryOri text-sm-ori font-bold transition hover:text-greyOri-300"
                 >
                   Mis clases
@@ -129,6 +137,7 @@ export function HeaderToDashboard() {
           name={user?.nombre ?? "Invitado"}
           email={user?.email ?? "Sin correo"}
           role={user?.id_tipo ?? 0}
+          width="w-96"
           isOpen={isOpenPerfilModal}
           onClose={handleClosePerfilModal}
         />
