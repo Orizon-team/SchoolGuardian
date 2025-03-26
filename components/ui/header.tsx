@@ -62,7 +62,6 @@ export function HeaderToDashboard() {
     setIsOpenPerfilModal(false);
   };
   const handleCloseSesion = () => {
-    //limpiar todo el local storage y las cookies
     localStorage.clear();
     Cookies.remove("token");
     setUser(null);

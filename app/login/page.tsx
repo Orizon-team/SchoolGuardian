@@ -26,20 +26,6 @@ export default function Login() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   console.log("Hola esto es el useEffect del login");
-  //   const login = async () => {
-  //     const UserToken = await loginUserRequest("uxi@gmail.com", "123");
-  //     if (UserToken) {
-  //       console.log("Token recibido:", UserToken);
-  //       setToken(token);
-  //     } else {
-  //       console.error("Error al iniciar sesión. Verifica las credenciales.");
-  //     }
-  //   };
-  //   login();
-  // }, []);
-
   const handleLogin = async () => {
     if (!email || !contrasena) {
       setErrorMessage("Por favor, completa todos los campos.");
@@ -73,7 +59,9 @@ export default function Login() {
             console.log("Tipo de usuario desconocido.");
           }
         } else {
-          console.log("No se encontró el usuario en localStorage.");
+          setIsSuccessModalOpen(false);
+          setErrorMessage(result);
+          setIsErrorModalOpen(true);
         }
       } else {
         setErrorMessage(
@@ -110,7 +98,7 @@ export default function Login() {
         <form
           className="space-y-4"
           onSubmit={(e) => {
-            e.preventDefault(); // Evita el comportamiento predeterminado del formulario
+            e.preventDefault();
             handleLogin();
           }}
         >
@@ -119,11 +107,11 @@ export default function Login() {
             placeHolder="Tu correo"
             isWithIcon={false}
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // Actualiza el estado de email
+            onChange={(e) => setEmail(e.target.value)}
           />
           <div className="flex justify-end">
             <Link
-              href="https://assists-api.onrender.com/cambiarContrasena.html"
+              href="https://assists-api.onrender.com/correoCambiarContrasena.html"
               className="text-sm-ori text-greyOri-500 hover:text-greyOri-950"
             >
               Olvidé mi contraseña
@@ -134,7 +122,7 @@ export default function Login() {
             placeHolder="Tu contraseña"
             isWithIcon={true}
             value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)} // Actualiza el estado de contrasena
+            onChange={(e) => setContrasena(e.target.value)}
           />
           <FillButton
             text="Iniciar Sesión"
@@ -142,7 +130,7 @@ export default function Login() {
             isFullWidth={true}
             isFlex={false}
             onClick={(e) => {
-              e.preventDefault(); // Evita el comportamiento predeterminado del formulario
+              e.preventDefault();
               handleLogin();
             }}
           />
@@ -176,7 +164,7 @@ export default function Login() {
         <ErrorModal
           isOpen={isErrorModalOpen}
           description={errorMessage || "Error desconocido"}
-          onClose={() => setIsErrorModalOpen(false)} // Solo se cierra cuando el usuario hace clic en cerrar
+          onClose={() => setIsErrorModalOpen(false)}
         />
       )}
       {isWarningModalOpen && (

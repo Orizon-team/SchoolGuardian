@@ -63,7 +63,7 @@ export default function SignUp() {
 
       setIsLoadingModalOpen(false);
 
-      if (newUserCreated) {
+      if (typeof newUserCreated === "object") {
        
         setIsSuccessModalOpen(true);
         console.log("Usuario registrado exitosamente:", newUserCreated);
@@ -72,8 +72,8 @@ export default function SignUp() {
         }, 2000);
 
       } else {
-   
-        setErrorMessage("Ocurrió un error al intentar crear la cuenta.");
+        const textMessage = newUserCreated as string;
+        setErrorMessage(textMessage);
         setIsErrorModalOpen(true);
       }
     } catch (error) {
