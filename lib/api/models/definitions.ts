@@ -41,6 +41,7 @@ export type Asistencia = {
   id_clase: number;
   estatus: 'Presente' | 'Ausente' | 'Tarde';
   fecha_hora: string;
+  nombre_clase: string;
 };
 
 export type UsuarioForm = {
