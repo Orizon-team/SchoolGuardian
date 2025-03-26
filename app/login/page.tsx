@@ -50,7 +50,7 @@ export default function Login() {
           const tipo = usuario.id_tipo;
 
           if (tipo === 1) {
-            console.log("Usuario tipo 1: Administrador");
+            console.log("Usuario tipo 1: Profesor");
             router.push("/dashboard/teacher_dashboard");
           } else if (tipo === 2) {
             console.log("Usuario tipo 2: Estudiante");

@@ -18,6 +18,8 @@ export type Clase = {
   nombre_clase: string;
   horario: string;
   duracion: number;
+  descripcion: string;
+  nombreProfesor: string;
   id_profesor: number;
   codigo_clase: string;
 };
