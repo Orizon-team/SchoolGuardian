@@ -1,12 +1,8 @@
-const URL = "https://assists-api.onrender.com/api/clases";
+import { get } from 'http';
+import { url } from "inspector";
+import { cookies } from "next/headers";
 
-export interface ClaseData {
-    nombre_clase: string;
-    horario: string; // formato ISO (ejemplo: "2025-03-20T10:00:00Z")
-    duracion: number;
-    id_profesor: number;
-    dias: string[]; // Ejemplo: ["Lunes", "Miércoles", "Viernes"]
-}
+const URL = "https://assists-api.onrender.com/api/clases/usuario";
 
 export async function createClaseRequest(
     claseData: ClaseData,
@@ -33,4 +29,30 @@ export async function createClaseRequest(
         console.error("Error al realizar el fetch:", error);
         return null;
     }
+}
+
+export async function GetAllClassesOfTeacher(id_profesor: number)
+{
+    const token = cookies.get
+    try {
+        const reponse = await fetch(`${URL}/:${id_profesor}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization:`Bearer ${token}`
+
+            },
+            body: JSON.stringify(
+                {
+                    id_
+                }
+            );
+
+        })
+        
+        
+    } catch (error) {
+        
+    }
+
 }
