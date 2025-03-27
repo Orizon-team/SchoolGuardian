@@ -19,9 +19,11 @@ export type Clase = {
   horario: string;
   duracion: number;
   descripcion: string;
-  nombreProfesor: string;
+  nombreProfesor?: string; 
   id_profesor: number;
   codigo_clase: string;
+  cantidadAlumnos: number;
+  dias: string[];
 };
 
 export type ClaseDias = {
