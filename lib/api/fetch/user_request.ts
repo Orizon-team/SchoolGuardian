@@ -16,16 +16,30 @@ export async function loginUserRequest(email: string, contrasena: string): Promi
             }),
         });
 
-        if (!response.ok) {
-            console.error("Error en la solicitud:", response.statusText);
-            return null;
+        switch (response.status) {
+            case 404:
+                console.error("Usuario no encontrado.");
+                return "Usuario no encontrado, verifique sus credenciales.";
+
+                break;
+            case 401:
+                console.error("Contraseña incorrecta.");
+                return "Contraseña incorrecta, verifique sus credenciales.";
+                break;
+            case 403:
+                console.error("Usuario bloqueado.");
+                return "Usuario bloqueado, contacte al administrador.";
+                break;
+
+            default:
+                break;
         }
 
         const data = await response.json();
         Cookies.set("token", data.token, { expires: 7, secure: true, sameSite: "Strict" });
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         console.log("Inicio de sesión exitoso. Token y datos del usuario guardados.");
-        
+
         return data.token;
     } catch (error) {
         console.error("Error al realizar el fetch:", error);
@@ -33,7 +47,7 @@ export async function loginUserRequest(email: string, contrasena: string): Promi
     }
 }
 
-export async function registerUserRequest(nombre: string, email: string, contrasena: string, id_tipo: number): Promise<Omit<Usuario, "contrasena"> | null> {
+export async function registerUserRequest(nombre: string, email: string, contrasena: string, id_tipo: number): Promise<Omit<Usuario, "contrasena"> | null | string> {
     try {
         const response = await fetch(`${URL}`, {
             method: "POST",
@@ -48,10 +62,18 @@ export async function registerUserRequest(nombre: string, email: string, contras
             }),
         });
 
-        if (!response.ok) {
-            console.error("Error al insertar un usuario: ", response.statusText);
-            return null;
-        }
+      switch (response.status) {
+            case 400:
+                console.error("Usuario ya existente en la base de datos.");
+                return response.json().then((data) => data.message);
+                break;  
+           
+            case 500:
+                console.error("Error en el servidor.");
+                return "Error en el servidor, intente más tarde.";
+                break;
+      }
+
         const data: Usuario = await response.json();
 
         const { contrasena: _, ...usuarioSinContrasena } = data;

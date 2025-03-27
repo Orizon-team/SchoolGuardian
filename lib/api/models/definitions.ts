@@ -18,8 +18,12 @@ export type Clase = {
   nombre_clase: string;
   horario: string;
   duracion: number;
+  descripcion: string;
+  nombreProfesor?: string; 
   id_profesor: number;
   codigo_clase: string;
+  cantidadAlumnos: number;
+  dias: string[];
 };
 
 export type ClaseDias = {
@@ -41,6 +45,7 @@ export type Asistencia = {
   id_clase: number;
   estatus: 'Presente' | 'Ausente' | 'Tarde';
   fecha_hora: string;
+  nombre_clase: string;
 };
 
 export type UsuarioForm = {

@@ -19,7 +19,7 @@ export default function RootLayout({
       const usuario: Usuario = JSON.parse(userString);
       setUser(usuario);
     } else {
-      setUser(null); // Si no hay usuario, establece el estado en null
+      setUser(null);
     }
   };
 

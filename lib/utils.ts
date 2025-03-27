@@ -32,3 +32,7 @@ export function GetNowDate(): string {
 
   return `${diaSemana}, ${dia} de ${mes}, ${anio}`;
 }
+
+export function GetNowTimeOnSeconds() {
+  return Math.floor(Date.now() / 1000);
+}

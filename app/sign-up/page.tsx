@@ -18,13 +18,18 @@ export default function SignUp() {
   const [selectedRole, setSelectedRole] = useState("profesor");
   const isProfesor = selectedRole === "profesor";
 
-  // Estados para los campos del formulario
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [confirmarContrasena, setConfirmarContrasena] = useState("");
 
-  // Estados para los modales
+  const [errors, setErrors] = useState({
+    nombre: "",
+    email: "",
+    contrasena: "",
+    confirmarContrasena: ""
+  });
+
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
@@ -32,18 +37,81 @@ export default function SignUp() {
 
   const router = useRouter();
 
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const hasMinLength = password.length >= 8;
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return {
+      isValid: hasMinLength && hasLetter && hasNumber && hasSpecialChar,
+      requirements: {
+        length: hasMinLength,
+        letter: hasLetter,
+        number: hasNumber,
+        specialChar: hasSpecialChar
+      }
+    };
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      nombre: "",
+      email: "",
+      contrasena: "",
+      confirmarContrasena: ""
+    };
+
+    let isValid = true;
+
+    if (!nombre.trim()) {
+      newErrors.nombre = "El nombre completo es requerido";
+      isValid = false;
+    } else if (nombre.trim().length < 3) {
+      newErrors.nombre = "El nombre debe tener al menos 3 caracteres";
+      isValid = false;
+    }
+
+    if (!email) {
+      newErrors.email = "El correo electrónico es requerido";
+      isValid = false;
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Ingresa un correo electrónico válido";
+      isValid = false;
+    }
+
+    if (!contrasena) {
+      newErrors.contrasena = "La contraseña es requerida";
+      isValid = false;
+    } else {
+      const passwordValidation = validatePassword(contrasena);
+      if (!passwordValidation.isValid) {
+        newErrors.contrasena = "La contraseña no cumple con los requisitos";
+        isValid = false;
+      }
+    }
+
+    if (!confirmarContrasena) {
+      newErrors.confirmarContrasena = "Confirma tu contraseña";
+      isValid = false;
+    } else if (contrasena !== confirmarContrasena) {
+      newErrors.confirmarContrasena = "Las contraseñas no coinciden";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!nombre || !email || !contrasena || !confirmarContrasena) {
-      setErrorMessage("Por favor, completa todos los campos.");
-      setIsErrorModalOpen(true);
-      return;
-    }
-
-    if (contrasena !== confirmarContrasena) {
-      setErrorMessage("Las contraseñas no coinciden.");
-      setIsErrorModalOpen(true);
+    if (!validateForm()) {
       return;
     }
 
@@ -52,7 +120,6 @@ export default function SignUp() {
     setIsLoadingModalOpen(true);
 
     try {
-
       const newUserCreated = await registerUserRequest(
         nombre,
         email,
@@ -60,29 +127,49 @@ export default function SignUp() {
         tipoUsuario
       );
 
-
       setIsLoadingModalOpen(false);
 
-      if (newUserCreated) {
-       
+      if (typeof newUserCreated === "object") {
         setIsSuccessModalOpen(true);
         console.log("Usuario registrado exitosamente:", newUserCreated);
         setTimeout(() => {
           router.push("/login");
         }, 2000);
-
       } else {
-   
-        setErrorMessage("Ocurrió un error al intentar crear la cuenta.");
+        const textMessage = newUserCreated as string;
+        setErrorMessage(textMessage);
         setIsErrorModalOpen(true);
       }
     } catch (error) {
-   
       setIsLoadingModalOpen(false);
       setErrorMessage("Error al realizar la solicitud. Intenta nuevamente.");
       setIsErrorModalOpen(true);
       console.error("Error al realizar la solicitud:", error);
     }
+  };
+
+  const PasswordRequirements = () => {
+    const validation = validatePassword(contrasena);
+    
+    return (
+      <div className="mt-2 text-xs text-gray-600">
+        <p>La contraseña debe contener:</p>
+        <ul className="list-disc pl-5">
+          <li className={validation.requirements.length ? "text-green-500" : "text-red-500"}>
+            Mínimo 8 caracteres
+          </li>
+          <li className={validation.requirements.letter ? "text-green-500" : "text-red-500"}>
+            Al menos una letra
+          </li>
+          <li className={validation.requirements.number ? "text-green-500" : "text-red-500"}>
+            Al menos un número
+          </li>
+          <li className={validation.requirements.specialChar ? "text-green-500" : "text-red-500"}>
+            Al menos un carácter especial (!@#$%^&* etc.)
+          </li>
+        </ul>
+      </div>
+    );
   };
 
   return (
@@ -113,7 +200,6 @@ export default function SignUp() {
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
             {/* Selector de roles */}
             <div className="flex justify-center items-center bg-greyOri-50 p-2 mb-8 rounded-xl gap-4">
-              {/* Opción Estudiante */}
               <div
                 className={`flex gap-2 items-center justify-center flex-grow ${
                   !isProfesor
@@ -163,34 +249,71 @@ export default function SignUp() {
             </div>
 
             {/* Campos del formulario */}
-            <TextField
-              text="Nombre completo"
-              placeHolder="Tu nombre"
-              isWithIcon={false}
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-            />
-            <TextField
-              text="Correo electrónico"
-              placeHolder="micorreo@gmail.com"
-              isWithIcon={false}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextFieldForPassword
-              text="Contraseña"
-              placeHolder="Tu contraseña"
-              isWithIcon={true}
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
-            />
-            <TextFieldForPassword
-              text="Confirmar contraseña"
-              placeHolder="Confirma tu contraseña"
-              isWithIcon={true}
-              value={confirmarContrasena}
-              onChange={(e) => setConfirmarContrasena(e.target.value)}
-            />
+            <div>
+              <TextField
+                text="Nombre completo"
+                placeHolder="Tu nombre"
+                isWithIcon={false}
+                value={nombre}
+                onChange={(e) => {
+                  setNombre(e.target.value);
+                  if (errors.nombre) setErrors({...errors, nombre: ""});
+                }}
+              />
+              {errors.nombre && (
+                <p className="mt-1 text-xs text-red-500">{errors.nombre}</p>
+              )}
+            </div>
+            
+            <div>
+              <TextField
+                text="Correo electrónico"
+                placeHolder="micorreo@gmail.com"
+                isWithIcon={false}
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email) setErrors({...errors, email: ""});
+                }}
+              />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-500">{errors.email}</p>
+              )}
+            </div>
+            
+            <div>
+              <TextFieldForPassword
+                text="Contraseña"
+                placeHolder="Tu contraseña"
+                isWithIcon={true}
+                value={contrasena}
+                onChange={(e) => {
+                  setContrasena(e.target.value);
+                  if (errors.contrasena) setErrors({...errors, contrasena: ""});
+                }}
+              />
+              {errors.contrasena && (
+                <p className="mt-1 text-xs text-red-500">{errors.contrasena}</p>
+              )}
+              {contrasena && <PasswordRequirements />}
+            </div>
+            
+            <div>
+              <TextFieldForPassword
+                text="Confirmar contraseña"
+                placeHolder="Confirma tu contraseña"
+                isWithIcon={true}
+                value={confirmarContrasena}
+                onChange={(e) => {
+                  setConfirmarContrasena(e.target.value);
+                  if (errors.confirmarContrasena) setErrors({...errors, confirmarContrasena: ""});
+                }}
+              />
+              {errors.confirmarContrasena && (
+                <p className="mt-1 text-xs text-red-500">{errors.confirmarContrasena}</p>
+              )}
+            </div>
+            
             <div className="flex flex-col gap-4 justify-center items-center">
               {/* Botón de envío */}
               <FillButton

@@ -40,7 +40,12 @@ export function ProfileCardModal({
         className={`bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg ${width}`}
         onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal cierre el modal
       >
-        <h1 className="text-xl font-bold mb-2">Perfil</h1>
+        <div className="flex items-start justify-between">
+          <h1 className="text-xl font-bold mb-2">Perfil</h1>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
+        </div>
         <p className="text-sm text-greyOri-400 mb-6">
           Información de tu cuenta
         </p>
@@ -68,15 +73,6 @@ export function ProfileCardModal({
                 {email}
               </label>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <FillButton
-              text="Editar perfil"
-              isFlex={true}
-              isFullWidth={true}
-              isWithIcon={false}
-             
-            />
           </div>
         </div>
       </div>

@@ -103,3 +103,31 @@ export function TextFieldForPassword({
     </div>
   );
 }
+
+
+export function TimeField({
+  text,
+  value,
+  onChange,
+  isBold = false,
+}: Omit<textFieldprops, "placeHolder" | "isWithIcon" | "icon">) {
+  return (
+    <div className="flex flex-col">
+      <label
+        htmlFor="time"
+        className={`text-sm text-primaryOri ${isBold ? "font-bold" : ""}`}
+      >
+        {text}
+      </label>
+      <div className="relative flex items-center mt-2">
+        <input
+          type="time" // Tipo de input para seleccionar hora
+          id="time"
+          value={value}
+          onChange={onChange}
+          className="w-full pl-3 text-primaryOri border border-greyOri-300 rounded-sm bg-transparent h-12"
+        />
+      </div>
+    </div>
+  );
+}
