@@ -4,6 +4,12 @@ export type TipoUsuario = {
   nombre: string;
 };
 
+export interface Alumno {
+  id_usuario: number;
+  nombre: string;
+  email: string;
+}
+
 export type Usuario = {
   id_usuario: number;
   nombre: string;

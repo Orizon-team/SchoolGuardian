@@ -134,7 +134,7 @@ export default function SignUp() {
         console.log("Usuario registrado exitosamente:", newUserCreated);
         setTimeout(() => {
           router.push("/login");
-        }, 2000);
+        }, 1500);
       } else {
         const textMessage = newUserCreated as string;
         setErrorMessage(textMessage);

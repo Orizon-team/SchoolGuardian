@@ -115,13 +115,13 @@ export function TimeField({
     <div className="flex flex-col">
       <label
         htmlFor="time"
-        className={`text-sm text-primaryOri ${isBold ? "font-bold" : ""}`}
+        className={` text-sm text-primaryOri ${isBold ? "font-bold" : ""}`}
       >
         {text}
       </label>
       <div className="relative flex items-center mt-2">
         <input
-          type="time" // Tipo de input para seleccionar hora
+          type="time" 
           id="time"
           value={value}
           onChange={onChange}

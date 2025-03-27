@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "../styles/global.css";
+import { usePathname } from "next/navigation"; // Importar usePathname
 import { Header, HeaderToDashboard } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { Usuario } from "@/lib/api/models/definitions";
+import { LoadingModal } from "@/components/modals/status_modal";
 
 export default function RootLayout({
   children,
@@ -11,8 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<Usuario | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar el modal de carga
+  const pathname = usePathname(); // Obtener la ruta actual
 
-  // Función para obtener el usuario del localStorage
   const GetUserFromLocalStorage = () => {
     const userString = localStorage.getItem("usuario");
     if (userString) {
@@ -23,7 +26,17 @@ export default function RootLayout({
     }
   };
 
-  // Sobrescribir localStorage.setItem para interceptar cambios
+  useEffect(() => {
+    const handleRouteChange = async () => {
+      setIsLoading(true); // Activar el modal de carga
+      console.log("Cambio de ruta detectado:", pathname);
+      await GetUserFromLocalStorage(); // Simular un proceso de carga
+      setIsLoading(false); // Desactivar el modal de carga
+    };
+
+    handleRouteChange();
+  }, [pathname]); // Ejecutar cada vez que cambie la ruta
+
   useEffect(() => {
     const originalSetItem = localStorage.setItem;
     localStorage.setItem = function (key, value) {
@@ -32,7 +45,6 @@ export default function RootLayout({
       window.dispatchEvent(event);
     };
 
-    // Escuchar cambios en el localStorage
     const handleStorageChange = () => {
       GetUserFromLocalStorage();
     };
@@ -40,7 +52,6 @@ export default function RootLayout({
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("localStorageChange", handleStorageChange);
 
-    // Limpieza del evento
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("localStorageChange", handleStorageChange);
@@ -55,6 +66,12 @@ export default function RootLayout({
         {user ? <HeaderToDashboard /> : <Header />}
         <main>{children}</main>
         <Footer />
+        {/* Modal de carga */}
+        <LoadingModal
+          isOpen={isLoading} // Mostrar el modal si isLoading es true
+          description="Cargando..."
+          onClose={() => setIsLoading(false)} // Permitir cerrar manualmente si es necesario
+        />
       </body>
     </html>
   );

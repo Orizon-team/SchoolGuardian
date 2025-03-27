@@ -5,6 +5,7 @@ import { ClassCardTeacher } from "@/components/ui/class_card";
 import { FillButton } from "@/components/ui/button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { ProfileCardModal } from "@/components/modals/profile_teacher_modal";
 import { CreateClassModal } from "@/components/modals/create_class_modal";
 import { WarningModal, LoadingModal } from "@/components/modals/status_modal";
@@ -22,6 +23,7 @@ export default function TeacherDashboard() {
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
   const [isAssistanceModalOpen, setIsAssistanceModalOpen] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState<number | null>(null); // Estado para el id_clase seleccionado
+  const [selectedClassName, setSelectedClassName] = useState<string | null>(null); // Estado para el nombre_clase seleccionado
   const [classes, setClasses] = useState<Clase[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [filteredClasses, setFilteredClasses] = useState<Clase[] | null>(null);
@@ -30,6 +32,7 @@ export default function TeacherDashboard() {
   useEffect(() => {
     fetchClasses();
   }, []);
+
   useEffect(() => {
     if (searchText.trim() === "") {
       setFilteredClasses(classes);
@@ -91,6 +94,18 @@ export default function TeacherDashboard() {
     setIsWarningModalOpen(false);
   };
 
+  const handleOpenAssistanceModal = (id_clase: number, nombre_clase: string) => {
+    setSelectedClassId(id_clase);
+    setSelectedClassName(nombre_clase); // Establecer el nombre de la clase
+    setIsAssistanceModalOpen(true);
+  };
+
+  const handleCloseAssistanceModal = () => {
+    setSelectedClassId(null);
+    setSelectedClassName(null); // Limpiar el nombre de la clase
+    setIsAssistanceModalOpen(false);
+  };
+
   const handleOpenModal = () => setIsCreateClassModalOpen(true);
   const handleCloseModal = () => setIsCreateClassModalOpen(false);
 
@@ -102,8 +117,8 @@ export default function TeacherDashboard() {
         <div className="w-1/3">
           <SearchField
             placeHolder="Buscar clase"
-            value={searchText} 
-            onChange={(e) => setSearchText(e.target.value)} 
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
         <FillButton
@@ -138,13 +153,19 @@ export default function TeacherDashboard() {
       />
 
       {isAssistanceModalOpen && (
-        <ModalAssitance onClose={() => setIsAssistanceModalOpen(false)} />
+        <ModalAssitance
+          onClose={handleCloseAssistanceModal}
+          subjectName={selectedClassName || "Clase"}
+          id_clase={selectedClassId || 0}
+        />
       )}
 
       {/* Contenido principal */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-8">
         {loading ? (
-          <p className="text-center col-span-full">Cargando clases...</p>
+          <p className="text-center col-span-full">
+            <FontAwesomeIcon icon={faSpinner} spin className="text-primaryOri w-4 h-4 animate-spin" />
+          </p>
         ) : filteredClasses && filteredClasses.length > 0 ? (
           filteredClasses.map((clase) => (
             <ClassCardTeacher
@@ -158,7 +179,7 @@ export default function TeacherDashboard() {
               codeClass={clase.codigo_clase}
               teacherName=""
               onDeleteClick={() => handleOpenWarningModal(clase.id_clase)} // Abrir el modal con el id_clase
-              onAttendanceClick={() => setIsAssistanceModalOpen(true)}
+              onAttendanceClick={() => handleOpenAssistanceModal(clase.id_clase, clase.nombre_clase)} // Pasar id_clase y nombre_clase
             />
           ))
         ) : (

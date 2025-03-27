@@ -9,6 +9,7 @@ import { FillButton, OutlineButton } from "@/components/ui/button";
 import { createClassRequest } from "@/lib/api/fetch/class_teacher_request";
 import { WarningModal, SuccesModal, LoadingModal } from "./status_modal";
 import { CloseSesion } from "@/lib/utils";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 interface CreateClassModalProps {
   isOpen: boolean;
@@ -165,7 +166,7 @@ export function CreateClassModal({
               text="Duración (Días)"
               placeHolder="90"
               isWithIcon={true}
-              icon={<ClockIcon />}
+              icon={<FontAwesomeIcon icon={faCalendar} className="text-primaryOri w-1 h-1" />}
               isBold={true}
               value={duracion.toString()}
               onChange={(e) => setDuracion(Number(e.target.value) || "")}
@@ -228,6 +229,7 @@ export function CreateClassModal({
           isOpen={isWarningModalOpen}
           description={warningMessage}
           onClose={handleCloseWarningModal}
+          onAccept={handleCloseWarningModal} // Cambia esto si necesitas una acción diferente al aceptar
         />
       )}
 

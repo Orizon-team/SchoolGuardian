@@ -14,7 +14,7 @@ import {
   faUserGraduate,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-import { GetNowTimeOnSeconds } from "@/lib/utils";
+import { CloseSesion, GetNowTimeOnSeconds } from "@/lib/utils";
 
 export default function Home() {
   const router = useRouter();
@@ -42,6 +42,7 @@ export default function Home() {
 
       if (decodedToken.exp < currentTime) {
         console.error("El token ha expirado.");
+        CloseSesion();
         setTimeout(() => setIsLoading(false), 3000);
         return;
       }

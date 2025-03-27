@@ -117,7 +117,7 @@ export function HeaderToDashboard() {
                 onClick={handleOpenPerfilModal}
                 className="px-10 py-3.5 text-sm-ori font-bold text-secondaryOri transition hover:text-greyOri-300"
               >
-                Hi, {user?.nombre}
+                Hola, {user?.nombre}
               </button>
             </li>
             <li>
