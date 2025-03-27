@@ -16,10 +16,16 @@ interface ModalAssitanceProps {
   id_clase: number;
 }
 
-export function ModalAssitance({ onClose, subjectName, id_clase }: ModalAssitanceProps) {
-  const [students, setStudents] = useState<Alumno[]>([]); 
-  const [loading, setLoading] = useState(true); 
-  const [checks, setChecks] = useState<{ [key: number]: { onTime: boolean; late: boolean; missing: boolean } }>({});
+export function ModalAssitance({
+  onClose,
+  subjectName,
+  id_clase,
+}: ModalAssitanceProps) {
+  const [students, setStudents] = useState<Alumno[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [checks, setChecks] = useState<{
+    [key: number]: { onTime: boolean; late: boolean; missing: boolean };
+  }>({});
 
   // Estado para los contadores globales
   const [counters, setCounters] = useState({
@@ -28,17 +34,20 @@ export function ModalAssitance({ onClose, subjectName, id_clase }: ModalAssitanc
     missing: 0,
   });
 
-
   useEffect(() => {
     const fetchStudents = async () => {
       setLoading(true);
       const data = await getStudentsRequest(id_clase.toString());
       if (data) {
         setStudents(data); // Aquí usamos `data` directamente porque ya es un arreglo de alumnos
-  
+
         // Inicializar los checks para cada alumno
         const initialChecks = data.reduce((acc: any, student: Alumno) => {
-          acc[student.id_usuario] = { onTime: false, late: false, missing: false };
+          acc[student.id_usuario] = {
+            onTime: false,
+            late: false,
+            missing: false,
+          };
           return acc;
         }, {});
         setChecks(initialChecks);
@@ -47,10 +56,9 @@ export function ModalAssitance({ onClose, subjectName, id_clase }: ModalAssitanc
       }
       setLoading(false);
     };
-  
+
     fetchStudents();
   }, [id_clase]);
-
 
   useEffect(() => {
     const newCounters = {
@@ -69,17 +77,18 @@ export function ModalAssitance({ onClose, subjectName, id_clase }: ModalAssitanc
     setCounters(newCounters);
   }, [checks]);
 
-  const handleChange = (id_usuario: number, type: "onTime" | "late" | "missing") => (e: React.ChangeEvent<HTMLInputElement>) => {
-    
-    setChecks((prev) => ({
-      ...prev,
-      [id_usuario]: {
-        onTime: type === "onTime" ? e.target.checked : false,
-        late: type === "late" ? e.target.checked : false,
-        missing: type === "missing" ? e.target.checked : false,
-      },
-    }));
-  };
+  const handleChange =
+    (id_usuario: number, type: "onTime" | "late" | "missing") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setChecks((prev) => ({
+        ...prev,
+        [id_usuario]: {
+          onTime: type === "onTime" ? e.target.checked : false,
+          late: type === "late" ? e.target.checked : false,
+          missing: type === "missing" ? e.target.checked : false,
+        },
+      }));
+    };
 
   const headers = ["Nombre", "Correo Electrónico", "Asistencia"];
   const rows = students.map((student) => [
@@ -119,27 +128,59 @@ export function ModalAssitance({ onClose, subjectName, id_clase }: ModalAssitanc
           <div className="flex gap-6">
             <div className="flex-1 rounded-md p-8 border border-greyOri-200 space-y-4">
               <div className="space-y-1">
-                <h2 className="text-3xl-ori font-bold text-primaryOri">Asistencia estudiantil - {subjectName}</h2>
-                <p className="text-base-ori text-greyOri-500">Marcar asistencia para {GetNowDate()}.</p>
+                <h2 className="text-3xl-ori font-bold text-primaryOri">
+                  Asistencia estudiantil - {subjectName}
+                </h2>
+                <p className="text-base-ori text-greyOri-500">
+                  Marcar asistencia para {GetNowDate()}.
+                </p>
               </div>
 
               <div className="flex items-center gap-4">
                 <SearchField placeHolder="Buscar alumnos" />
-                <StatusIndicator text={`A tiempo: ${counters.onTime}`} bgColor="bg-greenOri-100" textColor="text-successstate" />
-                <StatusIndicator text={`Tarde: ${counters.late}`} bgColor="bg-yellowOri-100" textColor="text-warningstate" showWidth={true} />
-                <StatusIndicator text={`Ausente: ${counters.missing}`} bgColor="bg-redOri-100" textColor="text-errostate" />
+                <StatusIndicator
+                  text={`A tiempo: ${counters.onTime}`}
+                  bgColor="bg-greenOri-100"
+                  textColor="text-successstate"
+                />
+                <StatusIndicator
+                  text={`Tarde: ${counters.late}`}
+                  bgColor="bg-yellowOri-100"
+                  textColor="text-warningstate"
+                  showWidth={true}
+                />
+                <StatusIndicator
+                  text={`Ausente: ${counters.missing}`}
+                  bgColor="bg-redOri-100"
+                  textColor="text-errostate"
+                />
               </div>
 
-              <div>
+              <div className="overflow-y-auto max-h-[400px] border-t border-greyOri-200 mt-4">
                 {loading ? (
                   <p className="text-center">Cargando alumnos...</p>
                 ) : (
-                  <Table headers={headers} rows={rows} headClassName={headClassName} />
+                  <Table
+                    headers={headers}
+                    rows={rows}
+                    headClassName={headClassName}
+                  />
                 )}
               </div>
               <div className="flex justify-between">
-                <OutlineButton text="Cancelar" paddingX="px-10" paddingY="py-3" isWithIcon={false} onClick={onClose} />
-                <FillButton text="Guardar" paddingX="px-10" paddingY="py-3" isWithIcon={false} />
+                <OutlineButton
+                  text="Cancelar"
+                  paddingX="px-10"
+                  paddingY="py-3"
+                  isWithIcon={false}
+                  onClick={onClose}
+                />
+                <FillButton
+                  text="Guardar"
+                  paddingX="px-10"
+                  paddingY="py-3"
+                  isWithIcon={false}
+                />
               </div>
             </div>
           </div>
