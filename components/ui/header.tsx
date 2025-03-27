@@ -9,6 +9,7 @@ import { ProfileCardModal } from "../modals/profile_teacher_modal";
 import { Usuario } from "@/lib/api/models/definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
+import { CloseSesion} from "@/lib/utils";
 
 export function Header() {
   return (
@@ -62,10 +63,8 @@ export function HeaderToDashboard() {
     setIsOpenPerfilModal(false);
   };
   const handleCloseSesion = () => {
-    localStorage.clear();
-    Cookies.remove("token");
     setUser(null);
-    window.location.href = "/";
+    CloseSesion();
   };
 
   useEffect(() => {

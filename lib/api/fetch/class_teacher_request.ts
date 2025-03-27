@@ -27,7 +27,7 @@ export async function classTeacherRequest(id: number): Promise<Clase[] | string 
     if (!response.ok) {
       console.log("Respuesta no OK:", response);
       if (response.status === 401) {
-        return "No autorizado. Verifica tu token.";
+        return "Tu sesión a expirado.";
       } else if (response.status === 404) {
         return "No se encontraron clases para este profesor.";
       } else {
@@ -61,7 +61,7 @@ export async function classTeacherRequest(id: number): Promise<Clase[] | string 
 
 export async function createClassRequest(
   nombre_clase: string,
-  horario: string,
+  horario: string, // Recibe solo la hora (ejemplo: "10:00")
   duracion: number,
   descripcion: string,
   id_profesor: number,
@@ -83,12 +83,16 @@ export async function createClassRequest(
     return "Error: Datos inválidos. Verifica los campos.";
   }
 
+  // Formatear la hora al formato completo requerido por el backend
+  const fechaActual = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+  const horarioFormateado = `${fechaActual}T${horario.replace(/:00.000Z$/, "")}:00.000Z`; // Asegurar formato correcto
+
   try {
     console.log("Preparando solicitud para crear una clase...");
     console.log("URL:", `${URL}`);
     console.log("Cuerpo de la solicitud:", {
       nombre_clase,
-      horario,
+      horario: horarioFormateado, // Enviar el horario formateado
       duracion,
       descripcion,
       id_profesor,
@@ -103,7 +107,7 @@ export async function createClassRequest(
       },
       body: JSON.stringify({
         nombre_clase,
-        horario,
+        horario: horarioFormateado, // Enviar el horario formateado
         duracion,
         descripcion,
         id_profesor,
@@ -121,7 +125,7 @@ export async function createClassRequest(
       });
 
       if (response.status === 401) {
-        return "No autorizado. Verifica tu token.";
+        return "Tu sesión a expirado.";
       } else if (response.status === 400) {
         const errorData = await response.json();
         console.error("Detalles del error 400:", errorData);
@@ -141,4 +145,43 @@ export async function createClassRequest(
     console.error("Error al realizar la solicitud:", error);
     return "Error de red o del servidor.";
   }
+}
+
+export async function deleteClassRequest(id_clase : number) : Promise<string | null>
+{
+  const token = Cookies.get("token");
+  console.log("Token obtenido:", token);
+
+  try {
+    console.log("Enviando solicitud a la API...");
+    console.log("URL:", `${URL}/${id_clase}`);
+
+    const response = await fetch(`${URL}/${id_clase}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Estado de la respuesta:", response.status);
+
+    if (!response.ok) {
+      console.log("Respuesta no OK:", response);
+      if (response.status === 401) {
+        return "Tu sesión a expirado.";
+      } else if (response.status === 404) {
+        return "No se encontró la clase.";
+      } else {
+        return "Ocurrió un error al eliminar la clase.";
+      }
+    }
+
+    console.log("Clase eliminada exitosamente.");
+    return "Clase eliminada exitosamente.";
+  } catch (error) {
+    console.error("Error al realizar la solicitud:", error);
+    return "Error de red o del servidor.";
+  }
+
 }

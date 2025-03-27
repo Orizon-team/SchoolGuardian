@@ -14,6 +14,7 @@ interface StatusModalProps {
   onClose: () => void;
   description: string;
   showCloseButton?: boolean;
+  onAccept?: () => void;
 }
 
 export function LoadingModal({
@@ -163,6 +164,7 @@ export function WarningModal({
   isOpen,
   onClose,
   description,
+  onAccept,
 }: StatusModalProps) {
   if (!isOpen) return null;
 
@@ -194,7 +196,7 @@ export function WarningModal({
           </a>
           <OutlineButton
             text="Aceptar"
-            onClick={onClose}
+            onClick={onAccept}
             paddingX="px-4"
             paddingY="py-2"
             isWithIcon={false}

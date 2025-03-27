@@ -72,7 +72,6 @@ export default function Home() {
           <div className="w-12 h-12 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
         </div>
       )}
-
       {/* Contenido principal */}
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0 -z-10">
@@ -99,6 +98,51 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <section className="flex items-center justify-center gap-40 p-20 bg-greyOri-50">
+        <FeatureCard
+          icon={<FontAwesomeIcon icon={faUserGroup} />}
+          title="Administra clases"
+          description="Crea clases con calendarios personalizados"
+        />
+        <FeatureCard
+          icon={<FontAwesomeIcon icon={faCalendar} />}
+          title="Fácil registro"
+          description="Captura las asistencias con un solo click. Centra las llegadas en tiempos automaticos"
+        />
+        <FeatureCard
+          icon={<FontAwesomeIcon icon={faChartBar} />}
+          title="Analiza tu historial"
+          description="Visualiza las asistencias personales e identifica tu progreso "
+        />
+      </section>
+      <section className="flex flex-col items-center justify-center gap-4 p-20 ">
+        <h2 className="text-xl font-regular">
+          De confianza para profesores de todo el mundo
+        </h2>
+        <div className="flex gap-8 p-8">
+          <FontAwesomeIcon
+            icon={faChartBar}
+            className="text-primaryOri w-6 h-6"
+          />
+          <FontAwesomeIcon
+            icon={faUserGraduate}
+            className="text-primaryOri w-6 h-6"
+          />
+        </div>
+      </section>
+      <section className="flex flex-col items-center justify-center gap-4 p-20 bg-greyOri-50 ">
+        <h2 className="text-xl font-regular">
+          ¿Estás listo para optimizar las asistencias de tus clases?
+        </h2>
+        <p className="text-greyOri-400 text-sm">
+          Únete a millones de personas que ya han simplificado la gestión de sus
+          asistencias.
+        </p>
+        <Link href="/sign-up">
+          <FillButton text="Comienza tu prueba gratuita" isWithIcon={false} />
+        </Link>
+      </section>
+      
     </>
   );
 }

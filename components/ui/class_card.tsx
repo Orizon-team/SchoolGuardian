@@ -1,13 +1,17 @@
-"use client"; 
+"use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faClock,
   faCalendarDays,
   faCopy,
-  
 } from "@fortawesome/free-regular-svg-icons";
-import { faCheck,faUserGroup, faBook, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faUserGroup,
+  faBook,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   FillButton,
   SpecialGreenButton,
@@ -15,6 +19,7 @@ import {
 } from "@/components/ui/button";
 import { TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
+import { ExtractHourFromDatabaseFormat } from "@/lib/utils";
 
 interface classCardProps {
   nameClass: string;
@@ -28,7 +33,6 @@ interface classCardProps {
   onAttendanceClick?: () => void; // Función para el botón "Asistencias"
   onDeleteClick?: () => void; // Función para el botón "Eliminar"
 }
-
 
 export function ClassCardTeacher({
   nameClass,
@@ -44,6 +48,8 @@ export function ClassCardTeacher({
 }: classCardProps) {
   const [isCopy, setIsCopy] = useState(false);
 
+  const formattedSchedule = ExtractHourFromDatabaseFormat(schedule);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(codeClass); // Copia el código al portapapeles
     setIsCopy(true); // Cambia el estado para mostrar el ícono de check
@@ -58,7 +64,7 @@ export function ClassCardTeacher({
         <div className="flex gap-4 items-center">
           <FontAwesomeIcon icon={faClock} className="text-primaryOri w-4 h-5" />
           <label className="textsm text-primaryOri">
-            {schedule} - Duración: {duration}
+            {formattedSchedule} - Duración: {duration} días
           </label>
         </div>
         <div className="flex gap-4 items-center">
@@ -77,7 +83,9 @@ export function ClassCardTeacher({
         </div>
         <div className="flex gap-4 items-center justify-between">
           <div className="flex bg-greyOri-50 p-1 px-2 rounded-xl gap-2">
-            <label className="text-greyOri-500 font-bold">Code: {codeClass}</label>
+            <label className="text-greyOri-500 font-bold">
+              Code: {codeClass}
+            </label>
           </div>
           <span
             onClick={handleCopy} // Llama a la función para copiar
@@ -144,21 +152,27 @@ export function ClassCardStudent({
           <label className="textsm text-primaryOri">{days}</label>
         </div>
         <div className="flex gap-4 items-center">
-          <FontAwesomeIcon icon={faUserGroup} className="text-primaryOri w-4 h-5" />
+          <FontAwesomeIcon
+            icon={faUserGroup}
+            className="text-primaryOri w-4 h-5"
+          />
           <label className="textsm text-primaryOri">{numberOfStudents}</label>
         </div>
         <div className="flex gap-4 items-center">
           <FontAwesomeIcon icon={faBook} className="text-primaryOri w-4 h-5" />
           <label className="textsm text-primaryOri">{teacherName}</label>
         </div>
-       
       </div>
       <div className="flex justify-end items-center gap-24 pl-28">
-     
         <SpecialRedButton
           text="Dejar clase"
           isWithIcon={true}
-          icon={<FontAwesomeIcon icon={faArrowRightFromBracket} className="w-4 h-4" />}
+          icon={
+            <FontAwesomeIcon
+              icon={faArrowRightFromBracket}
+              className="w-4 h-4"
+            />
+          }
         />
       </div>
     </section>

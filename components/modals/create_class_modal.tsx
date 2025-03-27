@@ -7,22 +7,27 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FillButton, OutlineButton } from "@/components/ui/button";
 import { createClassRequest } from "@/lib/api/fetch/class_teacher_request";
-import { WarningModal, SuccesModal } from "./status_modal";
+import { WarningModal, SuccesModal, LoadingModal } from "./status_modal";
+import { CloseSesion } from "@/lib/utils";
 
 interface CreateClassModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onClassCreated?: () => void;
 }
 
-export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
-
-  const router = useRouter(); 
+export function CreateClassModal({
+  isOpen,
+  onClose,
+  onClassCreated,
+}: CreateClassModalProps) {
+  const router = useRouter();
   const [nombreClase, setNombreClase] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [hora, setHora] = useState(""); // Campo para la hora
   const [duracion, setDuracion] = useState<number | "">("");
   const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoadingModalOpen, setLoadingModal] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false); // Estado para el SuccesModal
   const [warningMessage, setWarningMessage] = useState("");
@@ -58,7 +63,7 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
     // Convertir la hora al formato esperado por la API
     const horario = `${hora}:00.000Z`;
 
-    setLoading(true);
+    setLoadingModal(true);
     const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
     const idProfesor = usuario?.id || null;
     const resultado = await createClassRequest(
@@ -70,18 +75,48 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
       diasSeleccionados
     );
 
-    setLoading(false);
+    setLoadingModal(false);
+    switch (resultado) {
+      case "Clase creada exitosamente.":
+        setNombreClase("");
+        setDescripcion("");
+        setHora("");
+        setDuracion("");
+        setDiasSeleccionados([]);
 
-    if (resultado === "Clase creada exitosamente.") {
-      onClose(); // Cerrar el modal de creación
-      setIsSuccesModalOpen(true); // Mostrar el SuccesModal
+        onClose();
+        setIsSuccesModalOpen(true);
 
-      // Ocultar el SuccesModal después de 3 segundos
-      setTimeout(() => {
-        router.push("/");
-      }, 3000);
-    } else {
-      handleOpenWarningModal(resultado || "Error al crear la clase.");
+        if (onClassCreated) {
+          onClassCreated();
+        }
+
+        setTimeout(() => {
+          setIsSuccesModalOpen(false);
+          router.push("/dashboard/teacher_dashboard");
+        }, 3000);
+        break;
+
+      case "Tu sesión ha expirado.":
+        handleOpenWarningModal("Tu sesión ha expirado.");
+        CloseSesion();
+        break;
+
+      case "Error en los datos enviados. Verifica el formato.":
+        handleOpenWarningModal(
+          "Error en los datos enviados. Verifica el formato."
+        );
+        break;
+
+      case "Error interno del servidor.":
+        handleOpenWarningModal("Error interno del servidor");
+        break;
+
+      default:
+        handleOpenWarningModal(
+          resultado || "Ocurrió un error al crear la clase."
+        );
+        break;
     }
   };
 
@@ -127,7 +162,7 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
               isBold={true}
             />
             <TextField
-              text="Duración (Minutos)"
+              text="Duración (Días)"
               placeHolder="90"
               isWithIcon={true}
               icon={<ClockIcon />}
@@ -178,11 +213,11 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
               onClick={onClose}
             />
             <FillButton
-              text={loading ? "Creando..." : "Crear"}
+              text={isLoadingModalOpen ? "Creando..." : "Crear"}
               isWithIcon={false}
               paddingX="px-10"
               onClick={handleCreateClass}
-              disabled={loading}
+              disabled={isLoadingModalOpen}
             />
           </div>
         </section>
@@ -203,6 +238,13 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
           onClose={() => setIsSuccesModalOpen(false)}
         />
       )}
+
+      {isLoadingModalOpen && 
+      <LoadingModal 
+      isOpen={isLoadingModalOpen} 
+      description="Creando clase..."
+      onClose={() => setLoadingModal(false)}
+      />}
     </>
   );
 }

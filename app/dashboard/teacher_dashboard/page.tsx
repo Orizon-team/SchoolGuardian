@@ -7,21 +7,41 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfileCardModal } from "@/components/modals/profile_teacher_modal";
 import { CreateClassModal } from "@/components/modals/create_class_modal";
-import { WarningModal } from "@/components/modals/status_modal";
+import { WarningModal, LoadingModal } from "@/components/modals/status_modal";
 import { ModalAssitance } from "@/components/ui/modal_Assistance";
 import { GetNowDate } from "@/lib/utils";
-import { classTeacherRequest } from "@/lib/api/fetch/class_teacher_request";
+import {
+  classTeacherRequest,
+  deleteClassRequest,
+} from "@/lib/api/fetch/class_teacher_request";
 import { Clase } from "@/lib/api/models/definitions";
 
 export default function TeacherDashboard() {
   const [isCreateClassModalOpen, setIsCreateClassModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
   const [isAssistanceModalOpen, setIsAssistanceModalOpen] = useState(false);
+  const [selectedClassId, setSelectedClassId] = useState<number | null>(null); // Estado para el id_clase seleccionado
   const [classes, setClasses] = useState<Clase[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [filteredClasses, setFilteredClasses] = useState<Clase[] | null>(null);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    const fetchClasses = async () => {
+    fetchClasses();
+  }, []);
+  useEffect(() => {
+    if (searchText.trim() === "") {
+      setFilteredClasses(classes);
+    } else {
+      const filtered = classes?.filter((clase) =>
+        clase.nombre_clase.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredClasses(filtered || []);
+    }
+  }, [searchText, classes]);
+
+  const fetchClasses = async () => {
     const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
     const idProfesor = usuario?.id || null;
 
@@ -32,29 +52,47 @@ export default function TeacherDashboard() {
       return;
     }
     console.log("ID del profesor:", idProfesor);
-      const result = await classTeacherRequest(idProfesor);
+    const result = await classTeacherRequest(idProfesor);
 
-      if (typeof result === "string") {
-        console.error("Error al obtener las clases:", result);
-        setClasses([]);
-      } else {
-        console.log("Clases obtenidas:", result);
-        setClasses(result);
-      }
-      setLoading(false);
-    };
+    if (typeof result === "string") {
+      console.error("Error al obtener las clases:", result);
+      setClasses([]);
+    } else {
+      console.log("Clases obtenidas:", result);
+      setClasses(result);
+    }
+    setLoading(false);
+  };
 
-    fetchClasses();
-  }, []);
+  const handleDeleteClass = async () => {
+    if (selectedClassId === null) return;
+    setIsWarningModalOpen(false);
+    setIsLoadingModalOpen(true);
+    const response = await deleteClassRequest(selectedClassId);
+    if (response === "Clase eliminada exitosamente.") {
+      console.log("Clase eliminada:", selectedClassId);
+      fetchClasses();
+      setIsLoadingModalOpen(false);
+    } else {
+      console.error("Error al eliminar la clase:", response);
+    }
+
+    setSelectedClassId(null);
+    setIsWarningModalOpen(false);
+  };
+
+  const handleOpenWarningModal = (id_clase: number) => {
+    setSelectedClassId(id_clase);
+    setIsWarningModalOpen(true);
+  };
+
+  const handleCloseWarningModal = () => {
+    setSelectedClassId(null);
+    setIsWarningModalOpen(false);
+  };
 
   const handleOpenModal = () => setIsCreateClassModalOpen(true);
   const handleCloseModal = () => setIsCreateClassModalOpen(false);
-
-  const handleOpenWarningModal = () => setIsWarningModalOpen(true);
-  const handleCloseWarningModal = () => setIsWarningModalOpen(false);
-
-  const handleOpenAssistenceModal = () => setIsAssistanceModalOpen(true);
-  const handleCloseAssistenceModal = () => setIsAssistanceModalOpen(false);
 
   return (
     <section className="flex flex-col gap-y-4 px-40 py-10">
@@ -62,7 +100,11 @@ export default function TeacherDashboard() {
       <p className="text-greyOri-400">{GetNowDate()}</p>
       <div className="flex gap-4 justify-between">
         <div className="w-1/3">
-          <SearchField placeHolder="Buscar clase" />
+          <SearchField
+            placeHolder="Buscar clase"
+            value={searchText} 
+            onChange={(e) => setSearchText(e.target.value)} 
+          />
         </div>
         <FillButton
           text="Clase nueva"
@@ -76,24 +118,23 @@ export default function TeacherDashboard() {
       </div>
 
       {/* Modales */}
-      <ProfileCardModal
-        isOpen={isCreateClassModalOpen}
-        onClose={handleCloseModal}
-        name="Juan Pérez"
-        email="juan.perez@example.com"
-        role={1}
-        width="w-96"
-      />
-
       <CreateClassModal
         isOpen={isCreateClassModalOpen}
         onClose={handleCloseModal}
+        onClassCreated={fetchClasses} // Pasar fetchClasses como prop
       />
 
       <WarningModal
         isOpen={isWarningModalOpen}
         onClose={handleCloseWarningModal}
         description="¿Deseas eliminar tu clase? Los cambios no serán reversibles"
+        onAccept={handleDeleteClass} // Confirmar eliminación
+      />
+
+      <LoadingModal
+        isOpen={isLoadingModalOpen}
+        description="Eliminando clase..."
+        onClose={() => setIsLoadingModalOpen(false)}
       />
 
       {isAssistanceModalOpen && (
@@ -104,8 +145,8 @@ export default function TeacherDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-8">
         {loading ? (
           <p className="text-center col-span-full">Cargando clases...</p>
-        ) : classes && classes.length > 0 ? (
-          classes.map((clase) => (
+        ) : filteredClasses && filteredClasses.length > 0 ? (
+          filteredClasses.map((clase) => (
             <ClassCardTeacher
               key={clase.id_clase}
               nameClass={clase.nombre_clase}
@@ -116,12 +157,12 @@ export default function TeacherDashboard() {
               days={clase.dias.join(", ")}
               codeClass={clase.codigo_clase}
               teacherName=""
-              onDeleteClick={handleOpenWarningModal}
-              onAttendanceClick={handleOpenAssistenceModal}
+              onDeleteClick={() => handleOpenWarningModal(clase.id_clase)} // Abrir el modal con el id_clase
+              onAttendanceClick={() => setIsAssistanceModalOpen(true)}
             />
           ))
         ) : (
-          <p className="text-center col-span-full">Aún no has creado clases</p>
+          <p className="text-center col-span-full">No se encontraron clases</p>
         )}
       </div>
     </section>
