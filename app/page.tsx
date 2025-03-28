@@ -77,7 +77,7 @@ export default function Home() {
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/images/school_background_2.jpg"
+            src="./images/school_background_2.jpg"
             alt="Hero"
             layout="fill"
             objectFit="cover"

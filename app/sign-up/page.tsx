@@ -200,7 +200,7 @@ export default function SignUp() {
         {/* Imagen de fondo */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/images/buildings.jpg"
+            src="./images/buildings.jpg"
             alt="Hero"
             layout="fill"
             objectFit="cover"

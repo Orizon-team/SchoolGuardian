@@ -82,7 +82,7 @@ export default function Login() {
     <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{
-        backgroundImage: "url('/study.jpg')",
+        backgroundImage: "url('./study.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
