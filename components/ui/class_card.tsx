@@ -4,7 +4,7 @@ import {
   faUser,
   faClock,
   faCalendarDays,
-  faCopy,
+  faCopy,  
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faCheck,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/button";
 import { TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
+import { deleteClassStudentRequest } from "@/lib/api/fetch/clase_student_request";
 import { ExtractHourFromDatabaseFormat } from "@/lib/utils";
 
 interface classCardProps {
@@ -30,8 +31,10 @@ interface classCardProps {
   numberOfStudents: number;
   codeClass: string;
   teacherName: string;
+  classId?: number ;
   onAttendanceClick?: () => void; // Función para el botón "Asistencias"
   onDeleteClick?: () => void; // Función para el botón "Eliminar"
+  onClassLeft?: () => void;
 }
 
 export function ClassCardTeacher({
@@ -132,7 +135,36 @@ export function ClassCardStudent({
   days,
   codeClass,
   teacherName,
+  classId,
+  onClassLeft,
 }: classCardProps) {
+  const [isLeaving, setIsLeaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLeaveClass = async () => {
+    if (!window.confirm("¿Estás seguro de que quieres abandonar esta clase?")) {
+      return;
+    }
+
+    setIsLeaving(true);
+    setError(null);
+    
+    try {
+      const success = await deleteClassStudentRequest(classId!);
+      if (success) {
+        onClassLeft?.();
+        alert("Has abandonado la clase exitosamente");
+      } else {
+        setError("No se pudo abandonar la clase");
+      }
+    } catch (err) {
+      setError("Error al procesar la solicitud");
+      console.error(err);
+    } finally {
+      setIsLeaving(false);
+    }
+  };
+  
   return (
     <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg ">
       <h1 className="text-xl font-bold">{nameClass}</h1>
@@ -163,10 +195,14 @@ export function ClassCardStudent({
           <label className="textsm text-primaryOri">{teacherName}</label>
         </div>
       </div>
-      <div className="flex justify-end items-center gap-24 pl-28">
+      <div className="flex justify-end mt-4">
+
         <SpecialRedButton
-          text="Dejar clase"
+          text={isLeaving ? "Abandonando..." : "Dejar clase"}
           isWithIcon={true}
+          
+          onClick={handleLeaveClass}
+          disabled={isLeaving}
           icon={
             <FontAwesomeIcon
               icon={faArrowRightFromBracket}
@@ -175,6 +211,12 @@ export function ClassCardStudent({
           }
         />
       </div>
+
+      {error && (
+        <div className="mt-2 text-red-500 text-sm text-center">
+          {error}
+        </div>
+      )}
     </section>
   );
 }

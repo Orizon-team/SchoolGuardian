@@ -114,7 +114,7 @@ export default function TeacherDashboard() {
       <h1 className="text-primaryOri text-3xl-ori font-bold">Dashboard</h1>
       <p className="text-greyOri-400">{GetNowDate()}</p>
       <div className="flex gap-4 justify-between">
-        <div className="w-1/3">
+        <div className="flex-1">
           <SearchField
             placeHolder="Buscar clase"
             value={searchText}
@@ -169,6 +169,7 @@ export default function TeacherDashboard() {
         ) : filteredClasses && filteredClasses.length > 0 ? (
           filteredClasses.map((clase) => (
             <ClassCardTeacher
+            
               key={clase.id_clase}
               nameClass={clase.nombre_clase}
               description={clase.descripcion}
