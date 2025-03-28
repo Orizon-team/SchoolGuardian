@@ -1,4 +1,3 @@
-//Plasmar cada uno de los tipos de datos en un archivo por separado
 export type TipoUsuario = {
   id_tipo_usuario: number;
   nombre: string;

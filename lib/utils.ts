@@ -64,3 +64,9 @@ export function ExtractHourFromDatabaseFormat(schedule: string): string {
   }
   return schedule;
 }
+
+export function getTokenFromCookies()
+{
+  const token = Cookies.get("token");
+  return token ? token : null;
+}

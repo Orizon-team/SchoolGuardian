@@ -9,6 +9,8 @@ import { FillButton, OutlineButton } from "@/components/ui/button";
 import { GetNowDate } from "@/lib/utils";
 import { getStudentsRequest } from "@/lib/api/fetch/students_request";
 import { Alumno } from "@/lib/api/models/definitions";
+import { createAssistanceRequest } from "@/lib/api/fetch/create_assist_request";
+
 
 interface ModalAssitanceProps {
   onClose: () => void;
@@ -33,6 +35,22 @@ export function ModalAssitance({
     late: 0,
     missing: 0,
   });
+
+  useEffect(() => { 
+    console.log("Creando la asistencia simualda para un alumno aleatorio");
+    const  createAssitanceTest = async ()=>
+    {
+      const response = await createAssistanceRequest(28, 59 , "A tiempo", "2023-10-10T12:00:00Z");
+     if(!response)
+      {
+        console.log("Asistencia creada correctamente");
+      }
+      console.log("Error al crear asistencia:", response);
+    }
+    createAssitanceTest();  
+   
+  
+  }, []);
 
   useEffect(() => {
     const fetchStudents = async () => {
