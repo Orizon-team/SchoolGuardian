@@ -4,7 +4,7 @@ import {
   faUser,
   faClock,
   faCalendarDays,
-  faCopy,  
+  faCopy,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faCheck,
@@ -21,6 +21,10 @@ import { TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { deleteClassStudentRequest } from "@/lib/api/fetch/clase_student_request";
 import { ExtractHourFromDatabaseFormat } from "@/lib/utils";
+import { LoadingModal } from "../modals/status_modal";
+import { WarningModal } from "../modals/status_modal";
+import { SuccesModal } from "../modals/status_modal";
+import { ErrorModal } from "../modals/status_modal";
 
 interface classCardProps {
   nameClass: string;
@@ -31,7 +35,7 @@ interface classCardProps {
   numberOfStudents: number;
   codeClass: string;
   teacherName: string;
-  classId?: number ;
+  classId?: number;
   onAttendanceClick?: () => void; // Función para el botón "Asistencias"
   onDeleteClick?: () => void; // Función para el botón "Eliminar"
   onClassLeft?: () => void;
@@ -140,31 +144,44 @@ export function ClassCardStudent({
 }: classCardProps) {
   const [isLeaving, setIsLeaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showLoadningModal, setShowLoadingModal] = useState(false);
 
   const handleLeaveClass = async () => {
-    if (!window.confirm("¿Estás seguro de que quieres abandonar esta clase?")) {
+    if (!classId) {
+      setError("No se pudo identificar la clase");
+      setShowErrorModal(true);
       return;
     }
 
     setIsLeaving(true);
     setError(null);
-    
+    setShowWarningModal(false);
+
     try {
-      const success = await deleteClassStudentRequest(classId!);
+      const success = await deleteClassStudentRequest(classId);
       if (success) {
-        onClassLeft?.();
-        alert("Has abandonado la clase exitosamente");
+        setShowSuccessModal(true);
       } else {
         setError("No se pudo abandonar la clase");
+        setShowErrorModal(true);
       }
     } catch (err) {
       setError("Error al procesar la solicitud");
+      setShowErrorModal(true);
       console.error(err);
     } finally {
       setIsLeaving(false);
     }
   };
-  
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    onClassLeft?.(); // Si prefieres que se ejecute aquí en lugar de inmediato
+  };
+
   return (
     <section className="bg-secondaryOri border-2 border-greyOri p-5 rounded-lg shadow-lg ">
       <h1 className="text-xl font-bold">{nameClass}</h1>
@@ -200,19 +217,41 @@ export function ClassCardStudent({
         <SpecialRedButton
           text={isLeaving ? "Abandonando..." : "Dejar clase"}
           isWithIcon={true}
-          
-          onClick={handleLeaveClass}
-          disabled={isLeaving}
-          icon={
-            <FontAwesomeIcon
-              icon={faArrowRightFromBracket}
-              className="w-4 h-4"
-            />
-          }
+          onClick={() => setShowWarningModal(true)}
+
+          disabled={isLeaving || showSuccessModal}
+          icon={<FontAwesomeIcon icon={faArrowRightFromBracket} className="w-4 h-4" />}
         />
       </div>
 
-      {error && (
+      <LoadingModal
+        isOpen={isLeaving}
+        description="Abandonando clase..."
+        onClose={() => { }} // Opcional si usas Solución 2
+      />
+
+      <WarningModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+        description="¿Estás seguro de que quieres abandonar esta clase?"
+        onAccept={handleLeaveClass}
+      />
+
+      <SuccesModal
+        isOpen={showSuccessModal}
+        onClose={handleSuccessClose}
+        description="Has abandonado la clase exitosamente"
+        showCloseButton={true}
+      />
+
+      {/* Modal de Error */}
+      <ErrorModal
+        isOpen={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        description={error || "Ocurrió un error inesperado"}
+      />
+
+      {error && !showErrorModal && (
         <div className="mt-2 text-red-500 text-sm text-center">
           {error}
         </div>
