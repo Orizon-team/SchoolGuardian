@@ -64,6 +64,12 @@ export function ModalAssitance({
   }, [id_clase]);
 
   const handleSaveAssistance = async () => {
+    if (students.length === 0) {
+      // Si no hay estudiantes, no permitir guardar
+      setIsSavedToday(true);
+      return;
+    }
+
     const unmarkedStudents = students.filter((student) => {
       const checkState = checks[student.id_usuario];
       return !checkState?.onTime && !checkState?.late && !checkState?.missing;
@@ -92,7 +98,7 @@ export function ModalAssitance({
       }
 
       if (!estatus) {
-        console.log(
+        console.error(
           `No se seleccionó un estado para el estudiante ${student.nombre}`
         );
         continue;
@@ -111,14 +117,14 @@ export function ModalAssitance({
             `Asistencia registrada para el estudiante ${student.nombre}`
           );
         } else {
-          console.log(
+          console.error(
             `Error al registrar la asistencia para ${student.nombre}: ${response}`
           );
           setErrorMessage(response || "Error desconocido");
           setIsWarningModalOpen(true);
         }
       } catch (error) {
-        console.log("Error al registrar la asistencia:", error);
+        console.error("Error al registrar la asistencia:", error);
         setErrorMessage("Ha ocurrido un error inesperado.");
         setIsErrorModalOpen(true);
       }
@@ -180,7 +186,8 @@ export function ModalAssitance({
     const filtered = students.filter(
       (student) =>
         student.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase()))
+        (student.email &&
+          student.email.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredStudents(filtered);
   }, [searchTerm, students]);
@@ -297,7 +304,9 @@ export function ModalAssitance({
                     isWithIcon={false}
                     onClick={onClose}
                   />
-                  {isSavedToday ? (
+                  {students.length === 0 ? (
+                    <p className="text-greyOri-500 text-sm-ori">Guardar</p>
+                  ) : isSavedToday ? (
                     <p className="text-greyOri-500 text-sm-ori">Guardado</p>
                   ) : (
                     <FillButton
