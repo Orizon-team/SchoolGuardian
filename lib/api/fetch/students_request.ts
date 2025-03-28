@@ -25,13 +25,13 @@ export async function getStudentsRequest(id_clase: string): Promise<Alumno[] | n
     console.log("Encabezados de la respuesta:", response.headers);
 
     if (response.status === 401) {
-      console.error("Token no válido o expirado. Redirigiendo al login...");
+      console.log("Token no válido o expirado. Redirigiendo al login...");
       CloseSesion(); 
       return null;
     }
 
     if (!response.ok) {
-      console.error("Error en la respuesta de la API:", {
+      console.log("Error en la respuesta de la API:", {
         status: response.status,
         statusText: response.statusText,
         url: response.url,
@@ -46,11 +46,11 @@ export async function getStudentsRequest(id_clase: string): Promise<Alumno[] | n
       console.log("Alumnos obtenidos:", data.alumnos);
       return data.alumnos as Alumno[];
     } else {
-      console.error("La respuesta no contiene un arreglo de alumnos válido.");
+      console.log("La respuesta no contiene un arreglo de alumnos válido.");
       return null;
     }
   } catch (error) {
-    console.error("Error en la solicitud:", error);
+    console.log("Error en la solicitud:", error);
     return null;
   }
 }

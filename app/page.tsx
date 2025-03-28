@@ -31,7 +31,7 @@ export default function Home() {
     const token = Cookies.get("token");
 
     if (!token) {
-      console.error("No se encontró un token.");
+      console.log("No se encontró un token.");
       return;
     }
 
@@ -41,7 +41,7 @@ export default function Home() {
       const currentTime = GetNowTimeOnSeconds();
 
       if (decodedToken.exp < currentTime) {
-        console.error("El token ha expirado.");
+        console.log("El token ha expirado.");
         CloseSesion();
         setTimeout(() => setIsLoading(false), 3000);
         return;

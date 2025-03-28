@@ -1,5 +1,5 @@
 "use client";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie, faUserGraduate } from "@fortawesome/free-solid-svg-icons";
@@ -27,7 +27,7 @@ export default function SignUp() {
     nombre: "",
     email: "",
     contrasena: "",
-    confirmarContrasena: ""
+    confirmarContrasena: "",
   });
 
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -47,15 +47,15 @@ export default function SignUp() {
     const hasLetter = /[a-zA-Z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    
+
     return {
       isValid: hasMinLength && hasLetter && hasNumber && hasSpecialChar,
       requirements: {
         length: hasMinLength,
         letter: hasLetter,
         number: hasNumber,
-        specialChar: hasSpecialChar
-      }
+        specialChar: hasSpecialChar,
+      },
     };
   };
 
@@ -64,7 +64,7 @@ export default function SignUp() {
       nombre: "",
       email: "",
       contrasena: "",
-      confirmarContrasena: ""
+      confirmarContrasena: "",
     };
 
     let isValid = true;
@@ -132,9 +132,14 @@ export default function SignUp() {
       if (typeof newUserCreated === "object") {
         setIsSuccessModalOpen(true);
         console.log("Usuario registrado exitosamente:", newUserCreated);
+
+        // Redirigir inmediatamente al login
         setTimeout(() => {
           router.push("/login");
         }, 1500);
+
+        // Deshabilitar el formulario para evitar reenvíos
+        document.querySelector("form")?.setAttribute("disabled", "true");
       } else {
         const textMessage = newUserCreated as string;
         setErrorMessage(textMessage);
@@ -147,24 +152,41 @@ export default function SignUp() {
       console.error("Error al realizar la solicitud:", error);
     }
   };
-
   const PasswordRequirements = () => {
     const validation = validatePassword(contrasena);
-    
+
     return (
       <div className="mt-2 text-xs text-gray-600">
         <p>La contraseña debe contener:</p>
         <ul className="list-disc pl-5">
-          <li className={validation.requirements.length ? "text-green-500" : "text-red-500"}>
+          <li
+            className={
+              validation.requirements.length ? "text-green-500" : "text-red-500"
+            }
+          >
             Mínimo 8 caracteres
           </li>
-          <li className={validation.requirements.letter ? "text-green-500" : "text-red-500"}>
+          <li
+            className={
+              validation.requirements.letter ? "text-green-500" : "text-red-500"
+            }
+          >
             Al menos una letra
           </li>
-          <li className={validation.requirements.number ? "text-green-500" : "text-red-500"}>
+          <li
+            className={
+              validation.requirements.number ? "text-green-500" : "text-red-500"
+            }
+          >
             Al menos un número
           </li>
-          <li className={validation.requirements.specialChar ? "text-green-500" : "text-red-500"}>
+          <li
+            className={
+              validation.requirements.specialChar
+                ? "text-green-500"
+                : "text-red-500"
+            }
+          >
             Al menos un carácter especial (!@#$%^&* etc.)
           </li>
         </ul>
@@ -257,14 +279,14 @@ export default function SignUp() {
                 value={nombre}
                 onChange={(e) => {
                   setNombre(e.target.value);
-                  if (errors.nombre) setErrors({...errors, nombre: ""});
+                  if (errors.nombre) setErrors({ ...errors, nombre: "" });
                 }}
               />
               {errors.nombre && (
                 <p className="mt-1 text-xs text-red-500">{errors.nombre}</p>
               )}
             </div>
-            
+
             <div>
               <TextField
                 text="Correo electrónico"
@@ -273,14 +295,14 @@ export default function SignUp() {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (errors.email) setErrors({...errors, email: ""});
+                  if (errors.email) setErrors({ ...errors, email: "" });
                 }}
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-500">{errors.email}</p>
               )}
             </div>
-            
+
             <div>
               <TextFieldForPassword
                 text="Contraseña"
@@ -289,7 +311,8 @@ export default function SignUp() {
                 value={contrasena}
                 onChange={(e) => {
                   setContrasena(e.target.value);
-                  if (errors.contrasena) setErrors({...errors, contrasena: ""});
+                  if (errors.contrasena)
+                    setErrors({ ...errors, contrasena: "" });
                 }}
               />
               {errors.contrasena && (
@@ -297,7 +320,7 @@ export default function SignUp() {
               )}
               {contrasena && <PasswordRequirements />}
             </div>
-            
+
             <div>
               <TextFieldForPassword
                 text="Confirmar contraseña"
@@ -306,14 +329,17 @@ export default function SignUp() {
                 value={confirmarContrasena}
                 onChange={(e) => {
                   setConfirmarContrasena(e.target.value);
-                  if (errors.confirmarContrasena) setErrors({...errors, confirmarContrasena: ""});
+                  if (errors.confirmarContrasena)
+                    setErrors({ ...errors, confirmarContrasena: "" });
                 }}
               />
               {errors.confirmarContrasena && (
-                <p className="mt-1 text-xs text-red-500">{errors.confirmarContrasena}</p>
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.confirmarContrasena}
+                </p>
               )}
             </div>
-            
+
             <div className="flex flex-col gap-4 justify-center items-center">
               {/* Botón de envío */}
               <FillButton
