@@ -50,6 +50,19 @@ export function ModalAssitance({
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Estado para verificar si las asistencias ya se guardaron hoy
+  const [isSavedToday, setIsSavedToday] = useState(false);
+
+  // Verificar si las asistencias ya se guardaron para hoy
+  useEffect(() => {
+    const savedDate = localStorage.getItem(`assistance_saved_${id_clase}`);
+    const today = new Date().toISOString().split("T")[0]; // Obtener solo la fecha (YYYY-MM-DD)
+
+    if (savedDate === today) {
+      setIsSavedToday(true);
+    }
+  }, [id_clase]);
+
   const handleSaveAssistance = async () => {
     const unmarkedStudents = students.filter((student) => {
       const checkState = checks[student.id_usuario];
@@ -79,7 +92,7 @@ export function ModalAssitance({
       }
 
       if (!estatus) {
-        console.error(
+        console.log(
           `No se seleccionó un estado para el estudiante ${student.nombre}`
         );
         continue;
@@ -98,14 +111,14 @@ export function ModalAssitance({
             `Asistencia registrada para el estudiante ${student.nombre}`
           );
         } else {
-          console.error(
+          console.log(
             `Error al registrar la asistencia para ${student.nombre}: ${response}`
           );
           setErrorMessage(response || "Error desconocido");
           setIsWarningModalOpen(true);
         }
       } catch (error) {
-        console.error("Error al registrar la asistencia:", error);
+        console.log("Error al registrar la asistencia:", error);
         setErrorMessage("Ha ocurrido un error inesperado.");
         setIsErrorModalOpen(true);
       }
@@ -113,6 +126,11 @@ export function ModalAssitance({
 
     setIsLoadingModalOpen(false);
     setIsSuccessModalOpen(true);
+
+    // Guardar la fecha de hoy en localStorage
+    const today = new Date().toISOString().split("T")[0];
+    localStorage.setItem(`assistance_saved_${id_clase}`, today);
+    setIsSavedToday(true);
   };
 
   useEffect(() => {
@@ -279,13 +297,17 @@ export function ModalAssitance({
                     isWithIcon={false}
                     onClick={onClose}
                   />
-                  <FillButton
-                    text="Guardar"
-                    paddingX="px-10"
-                    paddingY="py-3"
-                    isWithIcon={false}
-                    onClick={handleSaveAssistance}
-                  />
+                  {isSavedToday ? (
+                    <p className="text-greyOri-500 text-sm-ori">Guardado</p>
+                  ) : (
+                    <FillButton
+                      text="Guardar"
+                      paddingX="px-10"
+                      paddingY="py-3"
+                      isWithIcon={false}
+                      onClick={handleSaveAssistance}
+                    />
+                  )}
                 </div>
               </div>
             </div>
