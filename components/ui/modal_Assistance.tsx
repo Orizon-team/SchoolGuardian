@@ -29,37 +29,56 @@ export function ModalAssitance({
     [key: number]: { onTime: boolean; late: boolean; missing: boolean };
   }>({});
 
-  // Estado para los contadores globales
   const [counters, setCounters] = useState({
     onTime: 0,
     late: 0,
     missing: 0,
   });
 
-  useEffect(() => { 
-    console.log("Creando la asistencia simualda para un alumno aleatorio");
-    const  createAssitanceTest = async ()=>
-    {
-      const response = await createAssistanceRequest(28, 59 , "A tiempo", "2023-10-10T12:00:00Z");
-     if(!response)
-      {
-        console.log("Asistencia creada correctamente");
-      }
-      console.log("Error al crear asistencia:", response);
+const handleSaveAssistance = async () => {
+
+  for (const student of students) {
+    const checkState = checks[student.id_usuario];
+
+
+    let estatus = "";
+    if (checkState?.onTime) {
+      estatus = "Presente";
+    } else if (checkState?.late) {
+      estatus = "Tarde";
+    } else if (checkState?.missing) {
+      estatus = "Ausente";
     }
-    createAssitanceTest();  
+
+
+    if (!estatus) {
+      console.error(`No se seleccionó un estado para el estudiante ${student.nombre}`);
+      continue;
+    }
+
    
-  
-  }, []);
+    const response = await createAssistanceRequest(
+      student.id_usuario,
+      id_clase,
+      estatus,
+      new Date().toISOString()
+    );
+
+    if (response === "Asistencia creada correctamente") {
+      console.log(`Asistencia registrada para el estudiante ${student.nombre}`);
+    } else {
+      console.error(`Error al registrar la asistencia para ${student.nombre}: ${response}`);
+    }
+  }
+};
 
   useEffect(() => {
     const fetchStudents = async () => {
       setLoading(true);
       const data = await getStudentsRequest(id_clase.toString());
       if (data) {
-        setStudents(data); // Aquí usamos `data` directamente porque ya es un arreglo de alumnos
+        setStudents(data);
 
-        // Inicializar los checks para cada alumno
         const initialChecks = data.reduce((acc: any, student: Alumno) => {
           acc[student.id_usuario] = {
             onTime: false,
@@ -198,6 +217,7 @@ export function ModalAssitance({
                   paddingX="px-10"
                   paddingY="py-3"
                   isWithIcon={false}
+                  onClick={handleSaveAssistance}
                 />
               </div>
             </div>
