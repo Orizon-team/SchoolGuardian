@@ -5,7 +5,7 @@ import { SearchField } from "@/components/ui/search_Field";
 import { FillButton } from "@/components/ui/button";
 import { JoinClass } from "@/components/ui/join_Class";
 import { ClassCardStudent } from "@/components/ui/class_card";
-import { GetNowDate } from "@/lib/utils";
+import { GetNowDate, ExtractHourFromDatabaseFormat } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { classStudentRequest } from "@/lib/api/fetch/clase_student_request";
@@ -17,20 +17,15 @@ export default function My_Classes() {
   const [error, setError] = useState<string | null>(null); // Manejo de errores
   const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
 
+  // Efecto para cargar las clases al montar el componente
   useEffect(() => {
-    /**
-     * Carga las clases del estudiante al montar el componente
-     * Maneja estados de carga y errores
-     */
     const loadClasses = async () => {
       try {
         const data = await classStudentRequest();
-        if (data) {
-          setClasses(Array.isArray(data) ? data : []); // Asegura que siempre sea array
-        } else {
-          throw new Error("No se pudieron cargar las clases");
-        }
+        setClasses(Array.isArray(data) ? data : []);
+        setError(null); // Limpiar errores previos si la carga es exitosa
       } catch (err) {
+        setClasses([]); // Asegurar array vacío en caso de error
         setError(err instanceof Error ? err.message : "Error desconocido");
       } finally {
         setLoading(false);
@@ -40,38 +35,14 @@ export default function My_Classes() {
     loadClasses();
   }, []);
 
-  // **************************
-  // *** FUNCIONES UTILITARIAS
-  // **************************
-  /**
-   * Formatea un string de fecha-hora a formato legible
-   * Ejemplo: "2025-03-20 10:00:00" -> "10:00 AM"
-   */
-  const formatTime = (datetimeString: string) => {
-    try {
-      const date = new Date(datetimeString);
-      return date.toLocaleTimeString('es-ES', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }).replace(/\./g, '');
-    } catch {
-      return "Horario no definido"; // Fallback seguro
-    }
-  };
-
   /**
    * Filtra las clases basado en el término de búsqueda
-   * Maneja casos donde los datos podrían estar incompletos
+   * @returns Array de clases filtradas o array vacío
    */
   const filteredClasses = classes.filter(clase => {
     if (!clase || !clase.nombre_clase) return false;
-    try {
-      return clase.nombre_clase.toString().toLowerCase()
-        .includes(searchTerm.toLowerCase());
-    } catch {
-      return false; // Ignora elementos con errores
-    }
+    return clase.nombre_clase.toString().toLowerCase()
+      .includes(searchTerm.toLowerCase());
   });
 
   const handleOpenModalCodeClass = () => setIsJoinClassOpen(true);
@@ -124,7 +95,7 @@ export default function My_Classes() {
               nameClass={clase.nombre_clase || "Sin nombre"}
               description={`Clase de ${clase.nombre_clase}`}
               duration={clase.duracion || 90}
-              schedule={formatTime(clase.horario)}
+              schedule={ExtractHourFromDatabaseFormat(clase.horario)}
               numberOfStudents={clase.cantidadAlumnos || 0}
               days={Array.isArray(clase.dias) ? clase.dias.join(", ") : "Días no definidos"}
               codeClass={""}
@@ -139,7 +110,7 @@ export default function My_Classes() {
           <div className="col-span-full text-center py-10">
             {searchTerm
               ? `No se encontraron clases que coincidan con "${searchTerm}"`
-              : "No tienes clases asignadas"}
+              : "No estás inscrito en ninguna clase actualmente"}
           </div>
         )}
       </div>
