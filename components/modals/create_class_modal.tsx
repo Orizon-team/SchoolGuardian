@@ -127,7 +127,7 @@ export function CreateClassModal({ isOpen, onClose }: CreateClassModalProps) {
               isBold={true}
             />
             <TextField
-              text="Duración (Minutos)"
+              text="Duración (Dias)"
               placeHolder="90"
               isWithIcon={true}
               icon={<ClockIcon />}
